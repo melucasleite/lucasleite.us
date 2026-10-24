@@ -19,7 +19,7 @@
 
 ```text
 +--------------------------------------------------------------------+
-| one page  ·  fully static  ·  no client components  ·  0 trackers  |
+| 9 pages   ·  fully static  ·  no client components  ·  0 trackers  |
 +--------------------------------------------------------------------+
 ```
 
@@ -35,7 +35,7 @@ comfortable to read.
 | **hero**        | Block-letter banner, the pixel robot, a one-paragraph intro and four stats      |
 | **01 shipping** | Live products with real screenshots: REEF64, Genesis 22 Studio, Age of Potatoes |
 | **02 work**     | Career as a `git log`: roles and outcomes, no company names                     |
-| **03 projects** | Open-source side quests on GitHub                                               |
+| **03 projects** | An editor-style explorer: a `tree` of open-source repos, each with its README   |
 | **04 lab**      | The hardware hall of fame: robots and machines, with photos                     |
 | **05 writing**  | Build logs on Medium                                                            |
 | **06 stack**    | `which --all`                                                                   |
@@ -52,6 +52,9 @@ comfortable to read.
 app/
 ├── layout.tsx      fonts (JetBrains Mono + Inter), SEO metadata, viewport
 ├── page.tsx        every section, as server components, plus JSON-LD
+├── chrome.tsx      wallpaper, nav and footer shared by every page
+├── projects/       /projects index + one page per repo, README pulled from GitHub
+├── explorer.tsx    the projects explorer: a CSS-only tree + README panes, no JS
 ├── art.tsx         <Banner/> and <Robot/>: ASCII and pixel art drawn as SVG
 ├── globals.css     Catppuccin palette, glass, wallpaper, responsive layout
 ├── icon.svg        the ❯_ favicon
