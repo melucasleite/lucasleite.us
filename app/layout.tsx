@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   subsets: ["latin"],
   weight: ["400", "600", "800"],
+});
+
+// Mono for headings, labels and art; a proportional face for reading.
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 const description =
@@ -35,7 +41,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={jetbrains.variable}>
+    <html lang="en" className={`${jetbrains.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );
