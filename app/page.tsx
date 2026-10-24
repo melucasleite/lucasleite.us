@@ -1,69 +1,113 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Boot from "./boot";
+
+const TABS = [
+  ["neofetch", "~/lucas"],
+  ["projects", "projects"],
+  ["lab", "lab"],
+  ["work", "work.log"],
+  ["fallout", "termlink"],
+] as const;
+
+const CHIPS = [
+  "help",
+  "about",
+  "projects",
+  "lab",
+  "work",
+  "robot",
+  "fallout",
+  "contact",
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <>
+      <div className="wallpaper" aria-hidden="true">
+        <div className="blob b1" />
+        <div className="blob b2" />
+        <div className="blob b3" />
+        <div className="grain" />
+      </div>
+      <div className="crt" aria-hidden="true" />
+
+      <main className="window" id="win">
+        <header className="titlebar">
+          <div className="lights">
+            <button
+              className="light red"
+              data-action="close"
+              aria-label="Close window"
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <button
+              className="light yellow"
+              data-action="min"
+              aria-label="Minimize window"
+            />
+            <button
+              className="light green"
+              data-action="max"
+              aria-label="Maximize window"
+            />
+          </div>
+          <nav className="tabs" aria-label="Quick commands">
+            {TABS.map(([cmd, label], i) => (
+              <button
+                key={cmd}
+                className={`tab${i === 0 ? " active" : ""}`}
+                data-cmd={cmd}
+              >
+                <span className="dot" />
+                {label}
+              </button>
+            ))}
+          </nav>
+        </header>
+
+        <section className="term" id="term">
+          <div id="out" role="log" aria-live="polite">
+            {/* server-rendered fallback; replaced by the boot sequence */}
+            <noscript>
+              Lucas Leite: control &amp; automation engineer turned principal
+              software engineer.{" "}
+              <a href="https://github.com/melucasleite">
+                github.com/melucasleite
+              </a>
+            </noscript>
+          </div>
+          <form id="line" autoComplete="off">
+            <label htmlFor="cmd" className="prompt" />
+            <div className="row">
+              <span className="arrow">❯</span>
+              <div className="input-wrap">
+                <input
+                  id="cmd"
+                  name="cmd"
+                  spellCheck={false}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  enterKeyHint="go"
+                  aria-label="Type a command"
+                />
+                <span className="ghost" id="ghost" />
+              </div>
+            </div>
+          </form>
+        </section>
       </main>
-    </div>
+
+      <button className="dock" id="dock" aria-label="Reopen terminal" hidden>
+        <span>❯_</span>
+      </button>
+
+      <nav className="chips" aria-label="Commands">
+        {CHIPS.map((c) => (
+          <button key={c} data-cmd={c}>
+            {c}
+          </button>
+        ))}
+      </nav>
+
+      <Boot />
+    </>
   );
 }
