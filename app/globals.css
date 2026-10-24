@@ -378,7 +378,7 @@ ol {
   content: "--------------------------------------------------------------------------------------------------------------------------------";
 }
 .sh .note {
-  color: var(--overlay0);
+  color: var(--overlay);
   font-size: 13px;
   font-weight: 400;
   white-space: nowrap;
@@ -706,6 +706,12 @@ ol {
   }
   .nav nav a::before {
     content: none;
+  }
+  /* links scroll sideways; fade the edge so it reads as scrollable */
+  .nav nav {
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    padding-right: 24px;
   }
   .hero {
     grid-template-columns: minmax(0, 1fr);
