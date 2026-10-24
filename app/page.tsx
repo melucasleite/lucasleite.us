@@ -7,6 +7,7 @@ import {
   LIVE,
   POSTS,
   REPOS,
+  SITE,
   STACK,
   STATS,
 } from "@/lib/content";
@@ -56,9 +57,68 @@ function asciiBox(lines: string[]) {
   );
 }
 
+const PERSON = `${SITE.url}/#person`;
+
+// Structured data so search engines and AI read this as a person's profile.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": PERSON,
+      name: SITE.name,
+      url: SITE.url,
+      jobTitle: SITE.jobTitle,
+      description: SITE.description,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Orlando",
+        addressRegion: "FL",
+        addressCountry: "US",
+      },
+      hasCredential: {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "degree",
+        name: "B.Eng. in Control & Automation Engineering",
+      },
+      award: "1st place worldwide, robotics engineering (Amazon-e, 2017)",
+      knowsAbout: STACK.flatMap(([, v]) => v.split(", ")),
+      sameAs: Object.values(LINKS),
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${SITE.url}/#profile`,
+      url: SITE.url,
+      name: SITE.title,
+      inLanguage: "en-US",
+      mainEntity: { "@id": PERSON },
+      hasPart: LIVE.map((p) => ({
+        "@type": "WebSite",
+        name: p.name,
+        url: p.url,
+        description: p.blurb,
+        creator: { "@id": PERSON },
+      })),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE.url}/#website`,
+      url: SITE.url,
+      name: SITE.name,
+      publisher: { "@id": PERSON },
+    },
+  ],
+};
+
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="wallpaper" aria-hidden="true">
         <div className="blob b1" />
         <div className="blob b2" />
@@ -149,7 +209,7 @@ export default function Home() {
                   </div>
                   <Image
                     src={p.shot}
-                    alt={`${p.name} homepage`}
+                    alt={`Screenshot of the ${p.name} homepage`}
                     width={1200}
                     height={750}
                     sizes="(max-width: 760px) 100vw, 560px"
@@ -231,7 +291,7 @@ export default function Home() {
                 <div className="photo">
                   <Image
                     src={b.img}
-                    alt={b.name}
+                    alt={`${b.name}: ${b.blurb}`}
                     fill
                     sizes="(max-width: 760px) 100vw, 340px"
                   />
@@ -284,10 +344,16 @@ export default function Home() {
             ])}
           </pre>
           <div className="foot-links">
-            <a href={LINKS.github} {...ext}>
+            <a href={LINKS.github} {...ext} rel="me noopener noreferrer">
               github.com/melucasleite
             </a>
-            <a href={LINKS.medium} {...ext}>
+            <a href={LINKS.linkedin} {...ext} rel="me noopener noreferrer">
+              linkedin
+            </a>
+            <a href={LINKS.instagram} {...ext} rel="me noopener noreferrer">
+              instagram
+            </a>
+            <a href={LINKS.medium} {...ext} rel="me noopener noreferrer">
               medium
             </a>
           </div>

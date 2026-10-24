@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE } from "@/lib/content";
 import "./globals.css";
 
 const jetbrains = JetBrains_Mono({
@@ -15,28 +16,62 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const description =
-  "Control & automation engineer turned principal software engineer. Builds robots, games, reef robots and AI tooling.";
-
+// The share image comes from app/opengraph-image.jpg (+ .alt.txt), which
+// Next wires into both og:image and twitter:image.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.lucasleite.us"),
-  title: "Lucas Leite",
-  description,
+  metadataBase: new URL(SITE.url),
+  title: { default: SITE.title, template: `%s · ${SITE.name}` },
+  description: SITE.description,
+  applicationName: SITE.name,
+  authors: [{ name: SITE.name, url: SITE.url }],
+  creator: SITE.name,
+  keywords: [
+    "Lucas Leite",
+    "principal software engineer",
+    "control and automation engineer",
+    "robotics",
+    "reef automation",
+    "REEF64",
+    "AI agents",
+    "Claude Agent SDK",
+    "Elixir",
+    "Phoenix LiveView",
+    "Next.js",
+    "Orlando",
+  ],
+  category: "technology",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "lucas@leite ~ ❯",
-    description,
+    type: "profile",
     url: "/",
-    type: "website",
+    siteName: SITE.name,
+    title: SITE.title,
+    description: SITE.description,
+    locale: "en_US",
+    firstName: "Lucas",
+    lastName: "Leite",
   },
   twitter: {
     card: "summary_large_image",
-    title: "lucas@leite ~ ❯",
-    description,
+    title: SITE.title,
+    description: SITE.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
 export const viewport: Viewport = {
   themeColor: "#1e1e2e",
+  colorScheme: "dark",
   viewportFit: "cover",
 };
 

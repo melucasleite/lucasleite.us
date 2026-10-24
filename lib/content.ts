@@ -3,9 +3,20 @@
 const MEDIUM = "https://lucasleite-us.medium.com/";
 const GH = "https://github.com/melucasleite/";
 
+export const SITE = {
+  url: "https://www.lucasleite.us",
+  name: "Lucas Leite",
+  title: "Lucas Leite · Principal Software Engineer & Robotics Builder",
+  jobTitle: "Principal Software Engineer",
+  description:
+    "Lucas Leite is a control & automation engineer turned principal software engineer in Orlando, FL. He builds robots, reef automation, games and AI tooling, plus the platforms underneath them.",
+};
+
 export const LINKS = {
   github: "https://github.com/melucasleite",
   medium: "https://lucasleite-us.medium.com",
+  linkedin: "https://www.linkedin.com/in/lucas-leite",
+  instagram: "https://www.instagram.com/melucasleite",
 };
 
 export const STATS = [

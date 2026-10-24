@@ -50,11 +50,14 @@ comfortable to read.
 
 ```text
 app/
-├── layout.tsx      fonts (JetBrains Mono + Inter), metadata, viewport
-├── page.tsx        every section, as server components
+├── layout.tsx      fonts (JetBrains Mono + Inter), SEO metadata, viewport
+├── page.tsx        every section, as server components, plus JSON-LD
 ├── art.tsx         <Banner/> and <Robot/>: ASCII and pixel art drawn as SVG
 ├── globals.css     Catppuccin palette, glass, wallpaper, responsive layout
-└── icon.svg        the ❯_ favicon
+├── icon.svg        the ❯_ favicon
+├── apple-icon.tsx  the same mark as a PNG, for iOS home screens
+├── opengraph-image.jpg  the share card (+ .alt.txt), used for og: and twitter:
+└── robots.ts · sitemap.ts · manifest.ts   crawl rules, sitemap with images, web manifest
 lib/
 └── content.ts      all copy and data: stats, live sites, career, repos, lab, posts
 public/
