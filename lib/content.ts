@@ -93,7 +93,7 @@ export const CAREER = [
     when: "2023 – 2026",
     role: "Principal Software Engineer",
     short: "principal",
-    where: "one of America's most iconic brands",
+    where: "global marketing & sales planning",
     from: 2023,
     to: 2026,
     story:
@@ -114,12 +114,12 @@ export const CAREER = [
   {
     when: "2020 – 2023",
     role: "Senior Full-stack Engineer",
-    where: "one of America's most iconic brands",
+    where: "same brand, before the promotion",
     short: "senior",
     from: 2020,
     to: 2023,
     story:
-      "Joined one of America's most iconic brands as a senior engineer and worked the whole stack: React and Django up top, Kubernetes, AWS and Terraform underneath, and a hardened CI that caught bugs before they shipped.",
+      "Joined the brand as a senior engineer and worked the whole stack: React and Django up top, Kubernetes, AWS and Terraform underneath, and a hardened CI that caught bugs before they shipped.",
     highlights: ["full stack", "react · django", "k8s · aws · terraform"],
     points: [
       "End-to-end product work across React, Python and Django.",
