@@ -428,29 +428,16 @@ button {
 
 .banner {
   margin: 4px 0 10px;
-  font-size: min(var(--fs), calc(100cqw / 49.5));
-  line-height: 1.04;
-  white-space: pre;
-  font-weight: 400;
-  background: linear-gradient(
-    90deg,
-    var(--mauve),
-    var(--blue),
-    var(--teal),
-    var(--pink),
-    var(--mauve)
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 9s linear infinite;
+  max-width: 740px;
   user-select: none;
 }
-@keyframes shimmer {
-  to {
-    background-position: 300% 0;
-  }
+.banner svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(
+    0 0 14px color-mix(in srgb, var(--mauve) 30%, transparent)
+  );
 }
 
 .fetch {
@@ -709,10 +696,11 @@ body.fallout .term a,
 body.fallout .term input {
   text-transform: uppercase;
 }
-body.fallout .banner {
-  background: none;
-  color: var(--text);
-  animation: none;
+body.fallout .banner .fill {
+  fill: var(--text);
+}
+body.fallout .banner .shade {
+  stroke: var(--overlay);
 }
 body.fallout .robot {
   filter: drop-shadow(0 0 8px rgba(65, 255, 128, 0.6)) grayscale(1) sepia(1)
