@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Chrome, Footer } from "../chrome";
+import { Kinds } from "../kinds";
 import { REPOS, SITE } from "@/lib/content";
 
 const description = `Open-source projects by ${SITE.name}: ${REPOS.map(
@@ -47,7 +48,7 @@ export default function Projects() {
         }}
       />
       <Chrome />
-      <main className="container project">
+      <main className="container project" data-path="/projects">
         <nav className="crumbs" aria-label="Breadcrumb">
           <Link href="/">~</Link>/<span aria-current="page">projects</span>
         </nav>
@@ -71,6 +72,7 @@ export default function Projects() {
                   {r.fresh && <span className="fresh">new</span>}
                 </h3>
                 <p>{r.blurb}</p>
+                <Kinds kinds={r.kinds} />
                 <ul className="tags">
                   {r.tags.map((t) => (
                     <li key={t}>{t}</li>

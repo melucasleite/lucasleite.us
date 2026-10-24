@@ -1,4 +1,5 @@
 import { LINKS } from "@/lib/content";
+import { NavMemory } from "./nav-memory";
 
 export const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
@@ -16,6 +17,7 @@ export function Chrome({ home = false }: { home?: boolean }) {
   const base = home ? "" : "/";
   return (
     <>
+      <NavMemory />
       <div className="wallpaper" aria-hidden="true">
         <div className="blob b1" />
         <div className="blob b2" />

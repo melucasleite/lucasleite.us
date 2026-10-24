@@ -82,7 +82,13 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jetbrains.variable} ${inter.variable}`}>
+    // data-scroll-behavior: page changes jump to the top (or back to where you
+    // were) instantly; in-page section links still scroll smoothly.
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${jetbrains.variable} ${inter.variable}`}
+    >
       <body>
         {children}
         <Analytics />

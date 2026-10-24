@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Repo } from "@/lib/content";
 import { ext } from "./chrome";
+import { KindDots, Kinds } from "./kinds";
 
 // An editor-style explorer: a file tree on the left, the open project on the
 // right. Picking a project is a native radio group, so it works with no JS
@@ -44,6 +45,7 @@ export function Explorer({ repos }: { repos: Repo[] }) {
                   </span>
                   <span className="name">{r.name}</span>
                   {r.fresh && <span className="fresh">new</span>}
+                  <KindDots kinds={r.kinds} />
                 </label>
               </li>
             ))}
@@ -64,6 +66,7 @@ export function Explorer({ repos }: { repos: Repo[] }) {
                 {r.name}
               </h3>
               <p className="ex-blurb">{r.blurb}</p>
+              <Kinds kinds={r.kinds} />
               <ul className="tags">
                 {r.tags.map((t) => (
                   <li key={t}>{t}</li>
