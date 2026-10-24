@@ -2,11 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Repo } from "@/lib/content";
 import { ext } from "./chrome";
+import { ExplorerSwipe } from "./explorer-swipe";
 import { KindDots, Kinds } from "./kinds";
 
 // An editor-style explorer: a file tree on the left, the open project on the
 // right. Picking a project is a native radio group, so it works with no JS
-// and every pane stays in the HTML for crawlers.
+// and every pane stays in the HTML for crawlers. On phones the panes also
+// swipe sideways (see explorer-swipe.tsx).
 export function Explorer({ repos }: { repos: Repo[] }) {
   // Pair the nth radio with the nth pane. Generated so the list can grow.
   const show = repos
@@ -19,6 +21,7 @@ export function Explorer({ repos }: { repos: Repo[] }) {
   return (
     <div className="explorer glass">
       <style>{`@supports selector(:has(a)){.ex-pane{display:none}${show}{display:flex}}`}</style>
+      <ExplorerSwipe />
       <div className="ex-bar" aria-hidden="true">
         <i />
         <i />
