@@ -283,18 +283,39 @@ ol {
   gap: 14px;
 }
 .robot {
-  width: min(240px, 70%);
+  width: min(340px, 92%);
   height: auto;
-  shape-rendering: crispEdges;
-  filter: drop-shadow(0 0 22px rgba(180, 190, 254, 0.3));
-  animation: hover 3s ease-in-out infinite;
+  filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45))
+    drop-shadow(0 0 26px rgba(180, 190, 254, 0.22));
+}
+/* a parked rover: the camera head scans, lights blink, nothing floats */
+.robot .head {
+  animation: scan 6s ease-in-out infinite;
 }
 .robot .eye {
   animation: blink 3.4s ease-in-out infinite;
 }
-@keyframes hover {
+.robot .led {
+  animation: blink 1.6s steps(1) infinite;
+}
+.robot .beacon {
+  animation: beacon 1.2s ease-in-out infinite;
+}
+@keyframes scan {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  30% {
+    transform: translateX(-0.45px);
+  }
+  65% {
+    transform: translateX(0.45px);
+  }
+}
+@keyframes beacon {
   50% {
-    transform: translateY(-8px);
+    fill: #fab387;
   }
 }
 @keyframes blink {
@@ -1382,7 +1403,7 @@ ol {
     order: -1;
   }
   .robot {
-    width: 84px;
+    width: 120px;
   }
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
