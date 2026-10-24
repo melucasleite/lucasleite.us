@@ -758,7 +758,7 @@ ol {
   color: var(--green);
 }
 
-/* ---------- side projects ---------- */
+/* ---------- building in public (projects explorer) ---------- */
 
 /* An editor window: file tree on the left, the open README on the right. */
 .explorer {
@@ -1467,8 +1467,29 @@ ol {
     padding: 6px 12px;
     border: 1px solid var(--line);
   }
-  .ex-pane {
+  /* every pane in a row you can swipe through; the tabs follow along */
+  .ex-panes {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .ex-panes::-webkit-scrollbar {
+    display: none;
+  }
+  .explorer .ex-pane {
+    display: flex;
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     padding: 18px 16px 20px;
+    animation: none;
+  }
+  .ex-pane + .ex-pane {
+    border-top: 0;
   }
   .ex-pane h3 {
     font-size: 1.2rem;

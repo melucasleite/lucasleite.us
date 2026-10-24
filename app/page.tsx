@@ -214,7 +214,12 @@ export default function Home() {
           <Work />
         </Section>
 
-        <Section id="projects" n="03" title="side projects" note="open source">
+        <Section
+          id="projects"
+          n="03"
+          title="building in public"
+          note="open source, all of it"
+        >
           <Explorer repos={REPOS} />
         </Section>
 

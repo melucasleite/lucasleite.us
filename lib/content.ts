@@ -54,7 +54,7 @@ export const LIVE: Live[] = [
     name: "Code Factory",
     kinds: ["desktop", "ai", "devtools"],
     url: "https://ultracodefactory.com",
-    shot: "/shots/ultracodefactory.jpg",
+    shot: "/shots/code-factory-board.jpg",
     blurb:
       "A native macOS kanban board where every card is a markdown file and Claude Code agents are the crew. Describe an idea and an agent writes the card; hit Run Work and another picks it up. Open source.",
     tags: ["swiftui", "claude code", "macos", "open source"],
@@ -216,7 +216,7 @@ export const REPOS: Repo[] = [
     title: "Code Factory",
     url: GH + "ultracodefactory",
     site: "https://ultracodefactory.com",
-    shot: "/shots/ultracodefactory.jpg",
+    shot: "/shots/code-factory-board.jpg",
     fresh: true,
     blurb:
       "Code Factory: a native macOS kanban board where every card is a markdown file and Claude Code agents are the crew. Drag a card to run it, watch the agent's terminal live, and answer its questions with real buttons.",
