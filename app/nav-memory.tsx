@@ -37,6 +37,10 @@ function restoreScroll() {
 }
 if (typeof window !== "undefined") addEventListener("popstate", restoreScroll);
 
+// Clear the #anchor without a navigation, keeping Next's history state.
+const dropHash = () =>
+  history.replaceState(history.state, "", location.pathname + location.search);
+
 // The same for a full page load from back/forward (Next falls back to one
 // when a client navigation can't finish), once per document.
 let landed = false;
@@ -48,15 +52,34 @@ let landed = false;
 export function NavMemory() {
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
-      const a = (e.target as Element).closest?.("a[href]");
-      if (a && (a as HTMLAnchorElement).origin === location.origin) {
-        store(INAPP, "1");
-        store(scrollKey(location.pathname), String(scrollY));
-      }
+      const a = (e.target as Element).closest?.<HTMLAnchorElement>("a[href]");
+      if (!a || a.origin !== location.origin) return;
+      store(INAPP, "1");
+      store(scrollKey(location.pathname), String(scrollY));
+      // In-page links (the nav, "see what's shipping"): scroll there but keep
+      // the #anchor out of the URL, or a refresh later jumps back to it.
+      const target =
+        a.hash &&
+        a.pathname === location.pathname &&
+        document.getElementById(decodeURIComponent(a.hash.slice(1)));
+      if (!target || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      target.scrollIntoView({
+        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+      dropHash();
     };
     const onChange = (e: Event) => {
       const input = e.target as HTMLInputElement;
       if (input.name === "project") store(PICK, input.value);
+    };
+    // Arrived with an #anchor (a shared link, or a section link from another
+    // page): once the visitor scrolls away from it, drop it so a refresh
+    // keeps their place instead of jumping back.
+    const onScroll = () => {
+      if (location.hash) dropHash();
     };
     if (!landed) {
       landed = true;
@@ -73,9 +96,11 @@ export function NavMemory() {
     }
     document.addEventListener("click", onClick);
     document.addEventListener("change", onChange);
+    addEventListener("scroll", onScroll, { passive: true });
     return () => {
       document.removeEventListener("click", onClick);
       document.removeEventListener("change", onChange);
+      removeEventListener("scroll", onScroll);
     };
   }, []);
   return null;
