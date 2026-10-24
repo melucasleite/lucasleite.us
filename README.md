@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://www.lucasleite.us"><img src="docs/hero.jpg" alt="lucasleite.us: a LUCAS LEITE block-letter banner and a pixel-art robot on a Catppuccin glass background" width="100%"></a>
+<a href="https://www.lucasleite.us"><img src="docs/hero.jpg" alt="lucasleite.us: a LUCAS LEITE block-letter banner and an isometric voxel rescue robot on a Catppuccin glass background" width="100%"></a>
 
 # lucasleite.us
 
@@ -32,7 +32,7 @@ comfortable to read.
 
 | Section         | What's in it                                                                    |
 | --------------- | ------------------------------------------------------------------------------- |
-| **hero**        | Block-letter banner, the pixel robot, a one-paragraph intro and four stats      |
+| **hero**        | Block-letter banner, a voxel rescue robot, a one-paragraph intro and four stats |
 | **01 shipping** | Live products with real screenshots: REEF64, Genesis 22 Studio, Age of Potatoes |
 | **02 work**     | Career as a `git log`: roles and outcomes, no company names                     |
 | **03 projects** | An editor-style explorer: a `tree` of open-source repos, each with its README   |
@@ -55,7 +55,7 @@ app/
 ├── chrome.tsx      wallpaper, nav and footer shared by every page
 ├── projects/       /projects index + one page per repo, README pulled from GitHub
 ├── explorer.tsx    the projects explorer: a CSS-only tree + README panes, no JS
-├── art.tsx         <Banner/> and <Robot/>: ASCII and pixel art drawn as SVG
+├── art.tsx         <Banner/> and <Robot/>: the ASCII banner and the voxel rover, drawn as SVG
 ├── globals.css     Catppuccin palette, glass, wallpaper, responsive layout
 ├── icon.svg        the ❯_ favicon
 ├── apple-icon.tsx  the same mark as a PNG, for iOS home screens
@@ -80,10 +80,11 @@ font with different widths and scrambles the letters. [`art.tsx`](app/art.tsx) r
 time and draws it instead: every `█` becomes a `<rect>`, and every box-drawing character becomes a pair of
 strokes for the drop shadow. The gradient fill drifts with a little SMIL.
 
-**The robot is mirrored pixel art.** Only the left half (16 columns × 36 rows) is hand-drawn as characters
-(`@ # o :` for four shades). It's mirrored into a 32-wide sprite, a few asymmetric details are stamped on top,
-and each cell becomes a `<rect>`. The eyes blink with a CSS keyframe. It's the same robot as on my
-[GitHub profile](https://github.com/melucasleite).
+**The robot is voxels.** An isometric rescue rover in the spirit of the lab's Heimdall: twin tracks that wrap
+the whole hull, an armored deck, a gripper and a camera mast. [`art.tsx`](app/art.tsx) builds it from a few
+dozen `box()` calls, projects each cube 2:1, sorts back to front and keeps only the faces that aren't buried
+against a neighbor, all at build time, so it ships as plain SVG (about 5 KB gzipped). CSS does the rest: the
+camera head scans, the lenses blink, the beacon pulses.
 
 **Readability first.** Mono at accent sizes only. Inter for paragraphs at 16.5px / 1.65, `max-width` in `ch`.
 ASCII flourishes (`[tags]`, `+` bullets, `01 ---- title` rules) use plain latin characters, so they line up in
@@ -92,8 +93,9 @@ any monospace font. Motion turns off under `prefers-reduced-motion`.
 **Phones are first-class.** Under 760px the hero stacks with a small robot, the cards go single-column, the
 timeline collapses, and the nav scrolls sideways with a fade at the edge. Nothing scrolls horizontally.
 
-**Static all the way down.** No `"use client"` anywhere. Every route prerenders at build time, and images go
-through `next/image`.
+**Static all the way down.** Every route prerenders at build time, and images go through `next/image`. The
+only client code is small and optional: carousel arrows, phone swiping in the projects explorer, and
+remembering scroll position for the back button. Everything works without it.
 
 ## `❯ yarn dev`
 
