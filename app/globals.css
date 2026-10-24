@@ -680,7 +680,9 @@ ol {
 }
 .foot-links {
   display: flex;
-  gap: 22px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 22px;
   font-family: var(--mono);
   font-size: 14px;
 }
