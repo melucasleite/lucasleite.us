@@ -105,6 +105,9 @@ export default function Home() {
             {c}
           </button>
         ))}
+        <button id="kbd" className="kbd" aria-label="Show keyboard">
+          ⌨ type
+        </button>
       </nav>
 
       <Boot />
