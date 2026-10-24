@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { Banner, Robot } from "./art";
 import { Chrome, Footer, ext } from "./chrome";
+import { Carousel } from "./carousel";
 import { Explorer } from "./explorer";
+import { Kinds } from "./kinds";
+import { Work } from "./work";
 import {
-  CAREER,
   LAB,
   LINKS,
   LIVE,
@@ -65,7 +67,7 @@ const jsonLd = {
         name: "B.Eng. in Control & Automation Engineering",
       },
       award: "1st place worldwide, robotics engineering (Amazon-e, 2017)",
-      knowsAbout: STACK.flatMap(([, v]) => v.split(", ")),
+      knowsAbout: STACK.flatMap((l) => l.tools),
       sameAs: Object.values(LINKS),
     },
     {
@@ -118,7 +120,7 @@ export default function Home() {
       />
       <Chrome home />
 
-      <main id="top" className="container">
+      <main id="top" className="container" data-path="/">
         <section className="hero">
           <div className="hero-text">
             <p className="kicker">
@@ -165,12 +167,9 @@ export default function Home() {
         </ul>
 
         <Section id="shipping" n="01" title="shipping" note="live, go click">
-          <div className="live">
+          <Carousel id="shipping-track" label="Shipping">
             {LIVE.map((p, i) => (
-              <article
-                key={p.name}
-                className={`live-card glass${i % 2 ? " flip" : ""}`}
-              >
+              <article key={p.name} className="live-card glass">
                 <a
                   className="shot"
                   href={p.url}
@@ -185,14 +184,15 @@ export default function Home() {
                   </div>
                   <Image
                     src={p.shot}
-                    alt={`Screenshot of the ${p.name} homepage`}
+                    alt={`Screenshot of ${p.name}`}
                     width={1200}
                     height={750}
-                    sizes="(max-width: 760px) 100vw, 560px"
+                    sizes="(max-width: 760px) 90vw, 560px"
                     priority={i === 0}
                   />
                 </a>
                 <div className="live-body">
+                  <Kinds kinds={p.kinds} />
                   <h3>
                     <a href={p.url} {...ext}>
                       {p.name} <span className="arrow">↗</span>
@@ -207,38 +207,11 @@ export default function Home() {
                 </div>
               </article>
             ))}
-          </div>
+          </Carousel>
         </Section>
 
         <Section id="work" n="02" title="work" note="git log --career">
-          <ol className="timeline">
-            {CAREER.map((c) => (
-              <li key={c.when + c.role}>
-                <div className="when">{c.when}</div>
-                <div className="what">
-                  <h3>
-                    {c.role} <span className="where">· {c.where}</span>
-                  </h3>
-                  <ul>
-                    {c.points.map((p) => (
-                      <li key={p}>{p}</li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
-            ))}
-            <li>
-              <div className="when">2013 – 2019</div>
-              <div className="what">
-                <h3>
-                  B.Eng.{" "}
-                  <span className="where">
-                    · control &amp; automation engineering
-                  </span>
-                </h3>
-              </div>
-            </li>
-          </ol>
+          <Work />
         </Section>
 
         <Section id="projects" n="03" title="side projects" note="open source">
@@ -246,7 +219,7 @@ export default function Home() {
         </Section>
 
         <Section id="lab" n="04" title="the lab" note="robots and machines">
-          <div className="lab">
+          <Carousel id="lab-track" label="The lab" per={3}>
             {LAB.map((b) => (
               <a key={b.name} className="build glass" href={b.url} {...ext}>
                 <div className="photo">
@@ -254,7 +227,7 @@ export default function Home() {
                     src={b.img}
                     alt={`${b.name}: ${b.blurb}`}
                     fill
-                    sizes="(max-width: 760px) 100vw, 340px"
+                    sizes="(max-width: 760px) 85vw, 340px"
                   />
                   {b.year && <span className="badge">🏆 {b.year}</span>}
                 </div>
@@ -262,7 +235,7 @@ export default function Home() {
                 <p>{b.blurb}</p>
               </a>
             ))}
-          </div>
+          </Carousel>
         </Section>
 
         <Section
@@ -284,15 +257,35 @@ export default function Home() {
           </ul>
         </Section>
 
-        <Section id="stack" n="06" title="stack" note="which --all">
-          <dl className="stack glass">
-            {STACK.map(([k, v]) => (
-              <div key={k}>
-                <dt>{k}</dt>
-                <dd>{v}</dd>
-              </div>
+        <Section id="stack" n="06" title="stack" note="full stack, literally">
+          <p className="work-lede">
+            The right tool for the job, from <em>solder to LLMs</em>. A wide
+            toolbox, and every layer of it has shipped.
+          </p>
+          <ol className="layers">
+            {STACK.map((l) => (
+              <li
+                key={l.layer}
+                className="layer glass"
+                style={{ "--c": l.color } as React.CSSProperties}
+              >
+                <span className="layer-name">{l.layer}</span>
+                <ul className="tools">
+                  {l.tools.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+                <span className="proof">
+                  <span aria-hidden="true">shipped ▸ </span>
+                  {l.proof}
+                </span>
+              </li>
             ))}
-          </dl>
+          </ol>
+          <p className="layers-axis" aria-hidden="true">
+            <span>↑ cloud &amp; models</span>
+            <span>metal ↓</span>
+          </p>
         </Section>
 
         <Footer />

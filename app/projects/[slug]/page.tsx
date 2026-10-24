@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Chrome, Footer, ext } from "../../chrome";
+import { Kinds } from "../../kinds";
+import { BackLink } from "../../nav-memory";
 import { REPOS, SITE, type Repo } from "@/lib/content";
 import { getReadme } from "@/lib/readme";
 
@@ -87,7 +89,8 @@ export default async function Project({
       />
       <Chrome />
 
-      <main className="container project">
+      <main className="container project" data-path={`/projects/${r.name}`}>
+        <BackLink />
         <nav className="crumbs" aria-label="Breadcrumb">
           <Link href="/">~</Link>/<Link href="/projects">projects</Link>/
           <span aria-current="page">{r.name}</span>
@@ -99,6 +102,7 @@ export default async function Project({
           </p>
           <h1>{titleOf(r)}</h1>
           <p className="sub">{r.blurb}</p>
+          <Kinds kinds={r.kinds} />
           <ul className="tags">
             {r.tags.map((t) => (
               <li key={t}>{t}</li>
