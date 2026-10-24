@@ -127,21 +127,6 @@ export const CAREER = [
     ],
   },
   {
-    when: "2020",
-    role: "Senior Full-stack Engineer",
-    where: "edtech",
-    short: "edtech",
-    from: 2020,
-    to: 2020,
-    story:
-      "A stint at a public edtech company, building the tools that teach people to code: live chat for students, CRM sync and a productivity-suite migration.",
-    highlights: ["public company", "e-learning"],
-    points: [
-      "E-learning tools that teach people to code, at a public edtech company.",
-      "Live chat for students, CRM sync, and a productivity-suite migration.",
-    ],
-  },
-  {
     when: "2014 – 2019",
     role: "Startup years",
     short: "startups",
