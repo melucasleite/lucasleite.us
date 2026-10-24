@@ -1,9 +1,11 @@
 import { Marked } from "marked";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 import sanitizeHtml from "sanitize-html";
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
-const OWNER = "melucasleite";
+export const OWNER = "melucasleite";
+
+export const readmeTag = (repo: string) => `readme:${repo}`;
 
 // GitHub-style heading ids, so a README's own "#quick-start" links still work.
 const marked = new Marked({ gfm: true }, gfmHeadingId());
@@ -16,6 +18,8 @@ const marked = new Marked({ gfm: true }, gfmHeadingId());
 export async function getReadme(repo: string): Promise<string | null> {
   "use cache";
   cacheLife("days");
+  // Refreshed early by the GitHub push webhook, see app/api/revalidate.
+  cacheTag(readmeTag(repo));
 
   const raw = `https://raw.githubusercontent.com/${OWNER}/${repo}/HEAD/`;
   const res = await fetch(raw + "README.md").catch(() => null);
