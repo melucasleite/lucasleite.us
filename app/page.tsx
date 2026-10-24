@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Banner, Robot } from "./art";
+import { Chrome, Footer, ext } from "./chrome";
+import { Explorer } from "./explorer";
 import {
   CAREER,
   LAB,
@@ -11,14 +13,6 @@ import {
   STACK,
   STATS,
 } from "@/lib/content";
-
-const NAV = [
-  ["shipping", "#shipping"],
-  ["work", "#work"],
-  ["projects", "#projects"],
-  ["lab", "#lab"],
-  ["writing", "#writing"],
-] as const;
 
 function Section({
   id,
@@ -43,17 +37,6 @@ function Section({
       </h2>
       {children}
     </section>
-  );
-}
-
-const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
-
-// A plain-ASCII box: only latin glyphs, so it lines up in any monospace font.
-function asciiBox(lines: string[]) {
-  const w = Math.max(...lines.map((l) => l.length)) + 4;
-  const bar = "+" + "-".repeat(w - 2) + "+";
-  return [bar, ...lines.map((l) => "| " + l.padEnd(w - 4) + " |"), bar].join(
-    "\n",
   );
 }
 
@@ -100,6 +83,20 @@ const jsonLd = {
         creator: { "@id": PERSON },
       })),
     },
+    ...REPOS.map((r) => ({
+      "@type": r.site
+        ? ["SoftwareSourceCode", "SoftwareApplication"]
+        : "SoftwareSourceCode",
+      "@id": `${SITE.url}/projects/${r.name}#software`,
+      mainEntityOfPage: `${SITE.url}/projects/${r.name}`,
+      name: r.name,
+      description: r.blurb,
+      codeRepository: r.url,
+      ...(r.site && { url: r.site }),
+      keywords: r.tags.join(", "),
+      ...(r.shot && { image: SITE.url + r.shot }),
+      author: { "@id": PERSON },
+    })),
     {
       "@type": "WebSite",
       "@id": `${SITE.url}/#website`,
@@ -119,28 +116,7 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <div className="wallpaper" aria-hidden="true">
-        <div className="blob b1" />
-        <div className="blob b2" />
-        <div className="blob b3" />
-        <div className="grain" />
-      </div>
-
-      <header className="nav">
-        <div className="container nav-in">
-          <a href="#top" className="brand">
-            <span className="c-green">❯</span> lucas
-            <span className="muted">@</span>leite
-          </a>
-          <nav aria-label="Sections">
-            {NAV.map(([label, href]) => (
-              <a key={href} href={href}>
-                {label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <Chrome home />
 
       <main id="top" className="container">
         <section className="hero">
@@ -266,22 +242,7 @@ export default function Home() {
         </Section>
 
         <Section id="projects" n="03" title="side projects" note="open source">
-          <div className="repos">
-            {REPOS.map((r) => (
-              <a key={r.name} className="repo glass" href={r.url} {...ext}>
-                <h3>
-                  <span className="muted">~/</span>
-                  {r.name}
-                </h3>
-                <p>{r.blurb}</p>
-                <ul className="tags">
-                  {r.tags.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-              </a>
-            ))}
-          </div>
+          <Explorer repos={REPOS} />
         </Section>
 
         <Section id="lab" n="04" title="the lab" note="robots and machines">
@@ -334,34 +295,7 @@ export default function Home() {
           </dl>
         </Section>
 
-        <footer className="footer">
-          <pre className="box" aria-hidden="true">
-            {asciiBox([
-              "thanks for scrolling.",
-              "the robot says hi.",
-              "",
-              "say hi back on github.",
-            ])}
-          </pre>
-          <div className="foot-links">
-            <a href={LINKS.github} {...ext} rel="me noopener noreferrer">
-              github.com/melucasleite
-            </a>
-            <a href={LINKS.linkedin} {...ext} rel="me noopener noreferrer">
-              linkedin
-            </a>
-            <a href={LINKS.instagram} {...ext} rel="me noopener noreferrer">
-              instagram
-            </a>
-            <a href={LINKS.medium} {...ext} rel="me noopener noreferrer">
-              medium
-            </a>
-          </div>
-          <p className="muted small">
-            Next.js on Vercel. Catppuccin Mocha + JetBrains Mono, borrowed from
-            my terminal.
-          </p>
-        </footer>
+        <Footer />
       </main>
     </>
   );

@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import { LAB, LIVE, SITE } from "@/lib/content";
+import { LAB, LIVE, REPOS, SITE } from "@/lib/content";
 
-// One page, so one entry, with every on-page image listed for image search.
+// The homepage with every image on it, then the projects index and one
+// page per project.
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
@@ -10,9 +11,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
       images: [
         `${SITE.url}/opengraph-image.jpg`,
-        ...LIVE.map((p) => SITE.url + p.shot),
+        ...[...new Set([...LIVE, ...REPOS].flatMap((p) => p.shot ?? []))].map(
+          (shot) => SITE.url + shot,
+        ),
         ...LAB.map((b) => SITE.url + b.img),
       ],
     },
+    {
+      url: `${SITE.url}/projects`,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...REPOS.map((r) => ({
+      url: `${SITE.url}/projects/${r.name}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      ...(r.shot && { images: [SITE.url + r.shot] }),
+    })),
   ];
 }

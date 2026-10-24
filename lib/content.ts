@@ -113,11 +113,32 @@ export const CAREER = [
   },
 ];
 
-export type Repo = { name: string; url: string; blurb: string; tags: string[] };
+export type Repo = {
+  name: string;
+  title?: string;
+  url: string;
+  blurb: string;
+  tags: string[];
+  site?: string;
+  shot?: string;
+  fresh?: boolean;
+};
 
 export const REPOS: Repo[] = [
   {
+    name: "ultracodefactory",
+    title: "Code Factory",
+    url: GH + "ultracodefactory",
+    site: "https://ultracodefactory.com",
+    shot: "/shots/ultracodefactory.jpg",
+    fresh: true,
+    blurb:
+      "Code Factory: a native macOS kanban board where every card is a markdown file and Claude Code agents are the crew. Drag a card to run it, watch the agent's terminal live, and answer its questions with real buttons.",
+    tags: ["swift", "swiftui", "claude code", "tmux"],
+  },
+  {
     name: "mark85",
+    title: "MARK 85",
     url: GH + "mark85",
     blurb:
       "Iron Man suit firmware: four limb IMUs drive synthesized stereo servo whir and repulsor charge-up.",
@@ -125,6 +146,7 @@ export const REPOS: Repo[] = [
   },
   {
     name: "claude-tts",
+    title: "Claude TTS",
     url: GH + "claude-tts",
     blurb:
       "Claude Code narrates its work out loud with offline neural TTS. Piper + FFmpeg, driven by hooks.",
@@ -132,6 +154,7 @@ export const REPOS: Repo[] = [
   },
   {
     name: "claude-usage-widget",
+    title: "Claude Usage Widget",
     url: GH + "claude-usage-widget",
     blurb:
       "Your Claude Code limits as Apple-Watch-style activity rings, with a forecast of when you'll hit them.",
@@ -139,6 +162,7 @@ export const REPOS: Repo[] = [
   },
   {
     name: "mini-kitchen",
+    title: "Mini Kitchen",
     url: GH + "mini-kitchen",
     blurb:
       "Toddler play kitchen with a sink that actually runs. CNC oak plywood, 12 V pump, Python-generated cut sheets.",
@@ -146,6 +170,7 @@ export const REPOS: Repo[] = [
   },
   {
     name: "speedster",
+    title: "Speedster",
     url: GH + "speedster",
     blurb:
       "A focused, dark-mode Rubik's cube timer for iOS: scrambles, rolling averages and progress charts.",
@@ -153,7 +178,10 @@ export const REPOS: Repo[] = [
   },
   {
     name: "age-of-potatoes",
+    title: "Age of Potatoes",
     url: GH + "age-of-potatoes",
+    site: "https://ageofpotatoes.com",
+    shot: "/shots/potatoes.jpg",
     blurb:
       "The source behind ageofpotatoes.com, golden-file tests for the deterministic sim included.",
     tags: ["typescript", "pixijs"],
