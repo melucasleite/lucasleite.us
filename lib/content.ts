@@ -17,8 +17,7 @@ export const LINKS = {
   medium: "https://lucasleite-us.medium.com",
   linkedin: "https://www.linkedin.com/in/lucas-leite",
   instagram: "https://www.instagram.com/melucasleite",
-  // TODO(owner): the public address you want people to write to.
-  email: "mailto:TODO-owner@lucasleite.us",
+  email: "mailto:me@lucasleite.us",
 };
 
 // The one action the page asks for, said the same way every time.
