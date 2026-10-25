@@ -4,31 +4,28 @@
 
 # lucasleite.us
 
-**My corner of the internet: robots, reef automation, a potato tycoon, and thirteen years of shipping.**
+**The source of my portfolio: robots, reef automation, a potato tycoon, and thirteen years of shipping.**
 <br>Styled like my terminal. Built to be read.
 
 [![Live](https://img.shields.io/badge/live-lucasleite.us-a6e3a1?style=for-the-badge&labelColor=1e1e2e)](https://www.lucasleite.us)
 
-![Next.js 16](https://img.shields.io/badge/Next.js-16-cdd6f4?logo=nextdotjs&logoColor=cdd6f4&labelColor=1e1e2e)
-![React 19](https://img.shields.io/badge/React-19-89b4fa?logo=react&logoColor=89b4fa&labelColor=1e1e2e)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-89b4fa?logo=typescript&logoColor=89b4fa&labelColor=1e1e2e)
-![Vercel](https://img.shields.io/badge/deployed_on-Vercel-cdd6f4?logo=vercel&logoColor=cdd6f4&labelColor=1e1e2e)
-![Catppuccin Mocha](https://img.shields.io/badge/theme-Catppuccin_Mocha-cba6f7?labelColor=1e1e2e)
-
 </div>
 
 ```text
-+--------------------------------------------------------------------+
-| 9 pages   ·  fully static  ·  no client components  ·  0 trackers  |
-+--------------------------------------------------------------------+
++----------------------------------------------------------------------+
+| 9 pages  ·  prerendered  ·  3 small client components  ·  0 trackers |
++----------------------------------------------------------------------+
 ```
 
 ## `❯ cat about.txt`
 
-A single-page portfolio that borrows its look from my [Ghostty](https://ghostty.org) setup: **Catppuccin Mocha**,
-**JetBrains Mono**, translucent glass with a heavy blur, and a slow-drifting wallpaper. The terminal is the
-_accent_, not the interface. Headings, labels and art are monospace; body copy is set in Inter, so it stays
-comfortable to read.
+A portfolio (a homepage plus one page per project) that borrows its look from my [Ghostty](https://ghostty.org)
+setup: **Catppuccin Mocha**, **JetBrains Mono**, translucent glass with a heavy blur, and a slow-drifting
+wallpaper. The terminal is the _accent_, not the interface. Headings, labels and art are monospace; body copy is
+set in Inter, so it stays comfortable to read.
+
+Take what's useful: ASCII art drawn as SVG, a CSS-only projects explorer, and project pages that render each
+repo's README with no token.
 
 | Section         | What's in it                                                                   |
 | --------------- | ------------------------------------------------------------------------------ |
@@ -52,6 +49,7 @@ app/
 ├── page.tsx        every section, as server components, plus JSON-LD
 ├── chrome.tsx      wallpaper, nav and footer shared by every page
 ├── projects/       /projects index + one page per repo, README pulled from GitHub
+├── api/revalidate/ the GitHub push webhook that refreshes a project's README
 ├── explorer.tsx    the projects explorer: a CSS-only tree + README panes, no JS
 ├── art.tsx         <Banner/> and <Robot/>: the ASCII banner and the voxel rover, drawn as SVG
 ├── globals.css     Catppuccin palette, glass, wallpaper, responsive layout
@@ -88,12 +86,19 @@ camera head scans, the lenses blink, the beacon pulses.
 ASCII flourishes (`[tags]`, `+` bullets, `01 ---- title` rules) use plain latin characters, so they line up in
 any monospace font. Motion turns off under `prefers-reduced-motion`.
 
-**Phones are first-class.** Under 760px the hero stacks with a small robot, the cards go single-column, the
+**Phones get their own layout.** Under 760px the hero stacks with a small robot, the cards go single-column, the
 timeline collapses, and the nav scrolls sideways with a fade at the edge. Nothing scrolls horizontally.
 
 **Static all the way down.** Every route prerenders at build time, and images go through `next/image`. The
 only client code is small and optional: carousel arrows, phone swiping in the projects explorer, and
-remembering scroll position for the back button. Everything works without it.
+remembering scroll position for the back button. Everything works without it. The one dynamic route is the README webhook below.
+
+**Project pages carry the README.** Each `/projects/<repo>` page fetches that repo's `README.md` from
+`raw.githubusercontent.com` (no token, no API rate limit), renders it with `marked`, sanitizes it and caches it
+for a day under the tag `readme:<repo>`. Every project repo has a GitHub push webhook pointing at
+[`/api/revalidate`](app/api/revalidate/route.ts), which drops that one tag so the next visit re-renders. There's no
+shared secret: the route only accepts requests whose `x-vercel-forwarded-for` IP is in GitHub's published hook
+ranges, and Vercel overwrites that header, so callers can't fake it.
 
 ## `❯ yarn dev`
 
@@ -112,7 +117,9 @@ Requires Node 20+ and Yarn 1.
 
 ## `❯ git push`
 
-Pushing to `main` deploys to production on Vercel. Other branches get preview URLs.
+Pushing to `main` deploys to production on Vercel. Nothing else deploys
+([`vercel.json`](vercel.json) turns previews off), so check a branch locally with `yarn build && yarn start`
+before merging.
 
 | Host                | DNS record (Squarespace)          |
 | ------------------- | --------------------------------- |
