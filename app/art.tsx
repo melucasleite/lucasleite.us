@@ -69,30 +69,7 @@ export function Banner() {
       role="img"
       aria-label="Lucas Leite"
     >
-      <defs>
-        <linearGradient
-          id="bgrad"
-          gradientUnits="userSpaceOnUse"
-          x1="0"
-          y1="0"
-          x2={W}
-          y2="0"
-          spreadMethod="reflect"
-        >
-          <stop offset="0" stopColor="#cba6f7" />
-          <stop offset="0.35" stopColor="#89b4fa" />
-          <stop offset="0.7" stopColor="#94e2d5" />
-          <stop offset="1" stopColor="#f5c2e7" />
-          <animateTransform
-            attributeName="gradientTransform"
-            type="translate"
-            values={`0 0;${W} 0`}
-            dur="10s"
-            repeatCount="indefinite"
-          />
-        </linearGradient>
-      </defs>
-      <g fill="url(#bgrad)">
+      <g fill="var(--accent)">
         {rects.map((p) => {
           const [x, y] = p.split(",");
           return (
@@ -102,7 +79,7 @@ export function Banner() {
       </g>
       <path
         d={d}
-        stroke="url(#bgrad)"
+        stroke="var(--accent)"
         strokeWidth="1.1"
         opacity="0.5"
         fill="none"

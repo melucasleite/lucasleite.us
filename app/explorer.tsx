@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Repo } from "@/lib/content";
-import { ext } from "./chrome";
 import { ExplorerSwipe } from "./explorer-swipe";
-import { KindDots, Kinds } from "./kinds";
 
 // An editor-style explorer: a file tree on the left, the open project on the
 // right. Picking a project is a native radio group, so it works with no JS
@@ -48,7 +46,6 @@ export function Explorer({ repos }: { repos: Repo[] }) {
                   </span>
                   <span className="name">{r.name}</span>
                   {r.fresh && <span className="fresh">new</span>}
-                  <KindDots kinds={r.kinds} />
                 </label>
               </li>
             ))}
@@ -69,18 +66,16 @@ export function Explorer({ repos }: { repos: Repo[] }) {
                 {r.name}
               </h3>
               <p className="ex-blurb">{r.blurb}</p>
-              <Kinds kinds={r.kinds} />
               <ul className="tags">
                 {r.tags.map((t) => (
                   <li key={t}>{t}</li>
                 ))}
               </ul>
               {r.shot && (
-                <a
+                <Link
                   className="shot"
-                  href={r.site ?? r.url}
-                  {...ext}
-                  aria-label={`Open ${r.name}`}
+                  href={`/projects/${r.name}`}
+                  aria-label={`Read the ${r.name} README`}
                 >
                   <Image
                     src={r.shot}
@@ -90,20 +85,12 @@ export function Explorer({ repos }: { repos: Repo[] }) {
                     sizes="(max-width: 760px) 100vw, 640px"
                     loading={i === 0 ? "eager" : "lazy"}
                   />
-                </a>
+                </Link>
               )}
               <div className="cta">
-                {r.site && (
-                  <a className="btn primary" href={r.site} {...ext}>
-                    {r.site.replace(/^https?:\/\/(www\.)?/, "")} ↗
-                  </a>
-                )}
                 <Link className="btn" href={`/projects/${r.name}`}>
-                  cat README.md →
+                  Read the README
                 </Link>
-                <a className="btn" href={r.url} {...ext}>
-                  source ↗
-                </a>
               </div>
             </article>
           ))}

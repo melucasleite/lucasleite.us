@@ -5,16 +5,7 @@ import { Carousel } from "./carousel";
 import { Explorer } from "./explorer";
 import { Kinds } from "./kinds";
 import { Work } from "./work";
-import {
-  LAB,
-  LINKS,
-  LIVE,
-  POSTS,
-  REPOS,
-  SITE,
-  STACK,
-  STATS,
-} from "@/lib/content";
+import { CTA, LAB, LINKS, LIVE, REPOS, SITE, STACK } from "@/lib/content";
 
 function Section({
   id,
@@ -67,7 +58,7 @@ const jsonLd = {
         name: "B.Eng. in Control & Automation Engineering",
       },
       award: "1st place worldwide, robotics engineering (Amazon-e, 2017)",
-      knowsAbout: STACK.flatMap((l) => l.tools),
+      knowsAbout: STACK,
       sameAs: Object.values(LINKS),
     },
     {
@@ -128,24 +119,21 @@ export default function Home() {
             </p>
             <Banner />
             <h1>
-              Control &amp; automation engineer turned{" "}
-              <em>principal software engineer</em>.
+              From circuit board to cloud, I build it and{" "}
+              <em>keep it running</em>.
             </h1>
             <p className="sub">
-              I build robots, games, reef automation and AI tooling, plus the
-              platforms underneath them. Thirteen years of shipping, from a
-              world-championship robot to systems that hold 99.99% uptime. Based
-              in Orlando, FL.
+              I&apos;m a control &amp; automation engineer turned principal
+              software engineer in Orlando, FL, with 13 years of shipping behind
+              me, from a world-title robot to a global platform held at 99.99%
+              uptime.
             </p>
             <div className="cta">
               <a className="btn primary" href="#shipping">
-                see what&apos;s shipping ↓
+                {CTA.primary}
               </a>
-              <a className="btn" href={LINKS.github} {...ext}>
-                github ↗
-              </a>
-              <a className="btn" href={LINKS.medium} {...ext}>
-                build logs ↗
+              <a className="btn" href={LINKS.email}>
+                {CTA.contact}
               </a>
             </div>
           </div>
@@ -157,16 +145,12 @@ export default function Home() {
           </div>
         </section>
 
-        <ul className="stats">
-          {STATS.map(([big, small]) => (
-            <li key={big} className="glass">
-              <strong>{big}</strong>
-              <span>{small}</span>
-            </li>
-          ))}
-        </ul>
-
-        <Section id="shipping" n="01" title="shipping" note="live, go click">
+        <Section
+          id="shipping"
+          n="01"
+          title="shipping"
+          note="live in production"
+        >
           <Carousel id="shipping-track" label="Shipping">
             {LIVE.map((p, i) => (
               <article key={p.name} className="live-card glass">
@@ -195,7 +179,7 @@ export default function Home() {
                   <Kinds kinds={p.kinds} />
                   <h3>
                     <a href={p.url} {...ext}>
-                      {p.name} <span className="arrow">↗</span>
+                      {p.name}
                     </a>
                   </h3>
                   <p>{p.blurb}</p>
@@ -220,10 +204,21 @@ export default function Home() {
           title="building in public"
           note="open source, all of it"
         >
-          <Explorer repos={REPOS} />
+          {/* Code Factory and Age of Potatoes are open too, but they already
+              lead the shipping section; their pages still live at /projects. */}
+          <Explorer repos={REPOS.filter((r) => !r.site)} />
         </Section>
 
         <Section id="lab" n="04" title="the lab" note="robots and machines">
+          {/* TODO(owner): confirm this is why you build, in your words. */}
+          <p className="work-lede">
+            I started with robots because a machine either works or it
+            doesn&apos;t. I still hold software to that. I write them up as{" "}
+            <a href={LINKS.medium} {...ext}>
+              <em>seven build logs on Medium</em>
+            </a>
+            , 2023 to 2024.
+          </p>
           <Carousel id="lab-track" label="The lab" per={3}>
             {LAB.map((b) => (
               <a key={b.name} className="build glass" href={b.url} {...ext}>
@@ -234,7 +229,9 @@ export default function Home() {
                     fill
                     sizes="(max-width: 760px) 85vw, 340px"
                   />
-                  {b.year && <span className="badge">🏆 {b.year}</span>}
+                  {b.year && (
+                    <span className="badge">1st place · {b.year}</span>
+                  )}
                 </div>
                 <h3>{b.name}</h3>
                 <p>{b.blurb}</p>
@@ -243,57 +240,7 @@ export default function Home() {
           </Carousel>
         </Section>
 
-        <Section
-          id="writing"
-          n="05"
-          title="writing"
-          note="build logs on medium"
-        >
-          <ul className="posts glass">
-            {POSTS.map(([year, title, url]) => (
-              <li key={url}>
-                <a href={url} {...ext}>
-                  <span className="year">{year}</span>
-                  <span className="title">{title}</span>
-                  <span className="arrow">↗</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        <Section id="stack" n="06" title="stack" note="full stack, literally">
-          <p className="work-lede">
-            The right tool for the job, from <em>solder to LLMs</em>. A wide
-            toolbox, and every layer of it has shipped.
-          </p>
-          <ol className="layers">
-            {STACK.map((l) => (
-              <li
-                key={l.layer}
-                className="layer glass"
-                style={{ "--c": l.color } as React.CSSProperties}
-              >
-                <span className="layer-name">{l.layer}</span>
-                <ul className="tools">
-                  {l.tools.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-                <span className="proof">
-                  <span aria-hidden="true">shipped ▸ </span>
-                  {l.proof}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <p className="layers-axis" aria-hidden="true">
-            <span>↑ cloud &amp; models</span>
-            <span>metal ↓</span>
-          </p>
-        </Section>
-
-        <Footer />
+        <Footer home />
       </main>
     </>
   );

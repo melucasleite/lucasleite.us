@@ -1,4 +1,4 @@
-import { LINKS } from "@/lib/content";
+import { CTA, LINKS } from "@/lib/content";
 import { NavMemory } from "./nav-memory";
 
 export const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -8,7 +8,6 @@ const NAV = [
   ["work", "#work"],
   ["projects", "#projects"],
   ["lab", "#lab"],
-  ["writing", "#writing"],
 ] as const;
 
 // Wallpaper and sticky nav, shared by every page. Off the homepage the
@@ -19,9 +18,6 @@ export function Chrome({ home = false }: { home?: boolean }) {
     <>
       <NavMemory />
       <div className="wallpaper" aria-hidden="true">
-        <div className="blob b1" />
-        <div className="blob b2" />
-        <div className="blob b3" />
         <div className="grain" />
       </div>
 
@@ -53,17 +49,26 @@ function asciiBox(lines: string[]) {
   );
 }
 
-export function Footer() {
+export function Footer({ home = false }: { home?: boolean }) {
   return (
     <footer className="footer">
       <pre className="box" aria-hidden="true">
+        {/* TODO(owner): confirm this is your opinion, in your words. */}
         {asciiBox([
-          "thanks for scrolling.",
-          "the robot says hi.",
-          "",
-          "say hi back on github.",
+          // Kept under ~36 columns so the box fits a 375px phone.
+          "The best problems sit between",
+          "hardware and software, where",
+          "nobody owns them. I like those.",
         ])}
       </pre>
+      <div className="cta">
+        <a className="btn primary" href={home ? "#shipping" : "/#shipping"}>
+          {CTA.primary}
+        </a>
+        <a className="btn" href={LINKS.email}>
+          {CTA.contact}
+        </a>
+      </div>
       <div className="foot-links">
         <a href={LINKS.github} {...ext} rel="me noopener noreferrer">
           github.com/melucasleite
