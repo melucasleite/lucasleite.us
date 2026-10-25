@@ -32,13 +32,11 @@ comfortable to read.
 
 | Section         | What's in it                                                                    |
 | --------------- | ------------------------------------------------------------------------------- |
-| **hero**        | Block-letter banner, a voxel rescue robot, a one-paragraph intro and four stats |
-| **01 shipping** | Live products with real screenshots: REEF64, Genesis 22 Studio, Age of Potatoes |
+| **hero**        | Block-letter banner, a voxel rescue robot, the headline and one call to action  |
+| **01 shipping** | Live products with real screenshots: Code Factory, REEF64, G22, Age of Potatoes |
 | **02 work**     | Career as a `git log`: roles and outcomes, no company names                     |
-| **03 projects** | An editor-style explorer: a `tree` of open-source repos, each with its README   |
-| **04 lab**      | The hardware hall of fame: robots and machines, with photos                     |
-| **05 writing**  | Build logs on Medium                                                            |
-| **06 stack**    | `which --all`                                                                   |
+| **03 projects** | An editor-style explorer: a `tree` of the other open-source repos               |
+| **04 lab**      | The hardware hall of fame: robots and machines, with their Medium build logs    |
 
 <details>
 <summary><b>See the whole page</b></summary>

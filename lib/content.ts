@@ -17,25 +17,25 @@ export const LINKS = {
   medium: "https://lucasleite-us.medium.com",
   linkedin: "https://www.linkedin.com/in/lucas-leite",
   instagram: "https://www.instagram.com/melucasleite",
+  email: "mailto:me@lucasleite.us",
 };
 
-export const STATS = [
-  ["13 yrs", "shipping software since 2013"],
-  ["1st", "place worldwide, robotics engineering"],
-  ["99.99%", "uptime on a global platform"],
-  ["100k+", "users on a startup I owned"],
-] as const;
+// The one action the page asks for, said the same way every time.
+export const CTA = {
+  primary: "See what I've shipped",
+  contact: "Email me",
+};
 
-// What kind of thing each project is, shown as colored chips.
+// What kind of thing each project is, shown as chips.
 export const KINDS = {
-  web: { label: "web app", color: "var(--blue)" },
-  mobile: { label: "mobile", color: "var(--teal)" },
-  desktop: { label: "desktop", color: "var(--lavender)" },
-  hardware: { label: "hardware", color: "var(--peach)" },
-  ai: { label: "ai", color: "var(--mauve)" },
-  game: { label: "game", color: "var(--pink)" },
-  devtools: { label: "dev tools", color: "var(--green)" },
-  maker: { label: "maker", color: "var(--yellow)" },
+  web: "web app",
+  mobile: "mobile",
+  desktop: "desktop",
+  hardware: "hardware",
+  ai: "ai",
+  game: "game",
+  devtools: "dev tools",
+  maker: "maker",
 } as const;
 
 export type Kind = keyof typeof KINDS;
@@ -92,93 +92,30 @@ export const CAREER = [
   {
     when: "2023 – 2026",
     role: "Principal Software Engineer",
-    short: "principal",
     where: "global marketing & sales planning",
-    from: 2023,
-    to: 2026,
     story:
-      "Promoted to principal and handed the keys to the brand's global marketing & sales planning platform. Set the roadmap and the architecture, held 99.99% uptime for teams around the world, and shipped agentic AI into production on top of it.",
-    highlights: [
-      "promoted to principal",
-      "99.99% uptime",
-      "global teams",
-      "agentic AI in production",
-    ],
-    points: [
-      "Owned roadmap, architecture and delivery, partnering directly with directors and PMs.",
-      "Held 99.99% uptime for 150+ monthly active users across global teams.",
-      "Designed a Phoenix LiveView component system that sped up the front end.",
-      "Put agentic AI into production with the Claude Agent SDK, MCP and vector search.",
-    ],
+      "At one of America's most iconic brands, I was promoted to principal and handed its global marketing & sales planning platform. I owned the roadmap and the architecture, held 99.99% uptime for 150+ monthly users across global teams, and put agentic AI into production with the Claude Agent SDK and MCP.",
   },
   {
     when: "2020 – 2023",
     role: "Senior Full-stack Engineer",
     where: "same brand, before the promotion",
-    short: "senior",
-    from: 2020,
-    to: 2023,
     story:
-      "Joined the brand as a senior engineer and worked the whole stack: React and Django up top, Kubernetes, AWS and Terraform underneath, and a hardened CI that caught bugs before they shipped.",
-    highlights: ["full stack", "react · django", "k8s · aws · terraform"],
-    points: [
-      "End-to-end product work across React, Python and Django.",
-      "Kubernetes, AWS and Terraform; hardened CI so bugs got caught earlier.",
-    ],
+      "I worked the whole stack: React and Django up top, Kubernetes, AWS and Terraform underneath, and a CI I hardened so bugs got caught before they shipped.",
   },
   {
     when: "2014 – 2019",
     role: "Startup years",
-    short: "startups",
     where: "builder and technical lead",
-    from: 2014,
-    to: 2019,
     story:
-      "Six years of building from zero: a restaurant platform with digital menus in 100+ languages, ordering and payments; a feedback SaaS grown to thousands of daily users; and a fantasy-soccer app for a Brazilian Série A club.",
-    highlights: [
-      "100k+ users",
-      "100+ languages",
-      "0 → thousands daily",
-      "Série A club",
-    ],
-    points: [
-      "Restaurant platform with digital menus in 100+ languages, ordering and payments.",
-      "Customer-feedback SaaS taken from zero to thousands of daily users.",
-      "Fantasy-soccer app for a Brazilian Série A club.",
-    ],
+      "Six years building from zero: a restaurant platform with digital menus in 100+ languages, a feedback SaaS I grew to thousands of daily users, and a fantasy-soccer app for a Brazilian Série A club. 100k+ users on a startup I owned.",
   },
   {
     when: "2013 – 2019",
     role: "Founder",
-    short: "lab founder",
     where: "hardware + software lab",
-    from: 2013,
-    to: 2019,
     story:
-      "Where it started: a hardware + software lab shipping for hundreds of business clients, while building a drone payload against yellow fever, malaria and chikungunya, and a park-cleaning robot that took 1st place in the world.",
-    highlights: [
-      "1st place worldwide",
-      "$10k grand prize",
-      "hundreds of clients",
-      "drones · robots",
-    ],
-    points: [
-      "Shipped software for hundreds of business clients.",
-      "Drone payload that sprays mosquito nests to fight yellow fever, malaria and chikungunya.",
-      "Park-cleaning robot that took 1st place worldwide in robotics engineering.",
-    ],
-  },
-  {
-    when: "2013 – 2019",
-    role: "B.Eng.",
-    short: "b.eng",
-    where: "control & automation engineering",
-    from: 2013,
-    to: 2019,
-    story:
-      "The degree behind the robots: control & automation engineering, studied alongside the lab and the startups.",
-    highlights: [],
-    points: [],
+      "Where it started: a lab I founded that shipped for hundreds of business clients. I built a mosquito-spraying drone payload against yellow fever, malaria and chikungunya, and a park-cleaning robot that took 1st place worldwide and a $10k grand prize, while earning my B.Eng. in control & automation engineering.",
   },
 ];
 
@@ -325,83 +262,42 @@ export const LAB: Build[] = [
   },
 ];
 
-export const POSTS = [
-  [
-    "2024",
-    "Building a fully automated hydroponic system",
-    MEDIUM + "building-a-fully-automated-hydroponic-system-cea759412ef1",
-  ],
-  [
-    "2023",
-    "Integrating Clerk with Django Rest Framework",
-    MEDIUM + "integrating-clerk-with-django-rest-framework-e1e2f041dba2",
-  ],
-  [
-    "2023",
-    "Amazon-e: an AI-powered park-cleaning robot",
-    MEDIUM + "amazon-e-ia-powered-autonomous-park-cleaning-robot-6d99c95fba59",
-  ],
-  [
-    "2023",
-    "Hexapod robot with 18 servos",
-    MEDIUM + "hexapod-robot-with-18-servos-ef4fcbbd12e",
-  ],
-  [
-    "2023",
-    "Heimdall: a rescue robot",
-    MEDIUM + "heimdall-a-rescue-robot-e999a4e0d470",
-  ],
-  ["2023", "Smart ink filler", MEDIUM + "smart-ink-filler-fffab733004b"],
-  [
-    "2023",
-    "Leaf: take the mystery out of growing plants",
-    MEDIUM + "leaf-take-out-the-mystery-of-growing-your-plants-8d98d5e69178",
-  ],
-] as const;
-
-// The stack, drawn as one: from the metal up to the models, each layer with
-// the tools and where they've shipped.
+// What I work with, from the metal up to the models. Only the JSON-LD reads
+// this now; the work and the projects already show it shipping.
 export const STACK = [
-  {
-    layer: "ai",
-    color: "var(--mauve)",
-    tools: ["Claude Agent SDK", "MCP", "agents", "vector search", "Bedrock"],
-    proof: "agentic AI in production · REEF64 · Code Factory",
-  },
-  {
-    layer: "interfaces",
-    color: "var(--blue)",
-    tools: ["React", "Next.js", "Phoenix LiveView", "SwiftUI", "PixiJS"],
-    proof: "this site · Age of Potatoes · Speedster",
-  },
-  {
-    layer: "backend",
-    color: "var(--sky)",
-    tools: ["Elixir", "TypeScript", "Python", "Django", "Flask", "Node"],
-    proof: "a 99.99% uptime platform · startups to thousands of daily users",
-  },
-  {
-    layer: "data",
-    color: "var(--teal)",
-    tools: ["Postgres", "Redis", "Supabase", "Snowflake"],
-    proof: "a global planning platform · Age of Potatoes",
-  },
-  {
-    layer: "infra",
-    color: "var(--green)",
-    tools: ["AWS", "GCP", "Terraform", "Kubernetes", "Docker", "Vercel"],
-    proof: "99.99% uptime · CI that catches bugs early",
-  },
-  {
-    layer: "firmware",
-    color: "var(--yellow)",
-    tools: ["C", "C++", "ESP32", "Arduino", "Raspberry Pi"],
-    proof: "MARK 85 · Smart Ink Filler · Heimdall",
-  },
-  {
-    layer: "hardware",
-    color: "var(--peach)",
-    tools: ["SolidWorks", "Onshape", "OpenSCAD", "CNC", "3D printing"],
-    proof: "a 12-printer farm · Mini Kitchen · a world-title robot",
-  },
-] as const;
+  "Claude Agent SDK",
+  "MCP",
+  "vector search",
+  "Bedrock",
+  "React",
+  "Next.js",
+  "Phoenix LiveView",
+  "SwiftUI",
+  "PixiJS",
+  "Elixir",
+  "TypeScript",
+  "Python",
+  "Django",
+  "Flask",
+  "Node",
+  "Postgres",
+  "Redis",
+  "Supabase",
+  "Snowflake",
+  "AWS",
+  "GCP",
+  "Terraform",
+  "Kubernetes",
+  "Docker",
+  "Vercel",
+  "C",
+  "C++",
+  "ESP32",
+  "Arduino",
+  "Raspberry Pi",
+  "SolidWorks",
+  "Onshape",
+  "OpenSCAD",
+  "CNC",
+  "3D printing",
+];
