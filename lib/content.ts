@@ -51,14 +51,16 @@ export type Live = {
 
 export const LIVE: Live[] = [
   {
-    name: "Code Factory",
-    kinds: ["desktop", "ai", "devtools"],
-    url: "https://ultracodefactory.com",
-    shot: "/shots/code-factory-board.jpg",
+    name: "Desloper",
+    kinds: ["web", "ai", "devtools"],
+    url: "https://ai-desloper.vercel.app",
+    shot: "/shots/desloper.jpg",
     blurb:
-      "A native macOS kanban board where every card is a markdown file and Claude Code agents are the crew. Describe an idea and an agent writes the card; hit Run Work and another picks it up. Open source.",
-    tags: ["swiftui", "claude code", "macos", "open source"],
+      "Paste a landing page and Desloper scores how generic it reads, shows every finding with evidence, then writes the prompt your own AI coding tool needs to fix it on your stack.",
+    tags: ["next.js", "ai sdk", "playwright", "supabase"],
   },
+  // Code Factory is hidden for now; restore it from git (shot is still in
+  // public/shots/code-factory-board.jpg).
   {
     name: "REEF64",
     kinds: ["ai", "hardware", "mobile", "web"],
@@ -133,16 +135,16 @@ export type Repo = {
 
 export const REPOS: Repo[] = [
   {
-    name: "ultracodefactory",
-    kinds: ["desktop", "ai", "devtools"],
-    title: "Code Factory",
-    url: GH + "ultracodefactory",
-    site: "https://ultracodefactory.com",
-    shot: "/shots/code-factory-board.jpg",
+    name: "ai-desloper",
+    kinds: ["web", "ai", "devtools"],
+    title: "Desloper",
+    url: GH + "ai-desloper",
+    site: "https://ai-desloper.vercel.app",
+    shot: "/shots/desloper.jpg",
     fresh: true,
     blurb:
-      "Code Factory: a native macOS kanban board where every card is a markdown file and Claude Code agents are the crew. Drag a card to run it, watch the agent's terminal live, and answer its questions with real buttons.",
-    tags: ["swift", "swiftui", "claude code", "tmux"],
+      "Desloper scores how generic an AI-written landing page is against eight principles, with deterministic detectors plus a model judge, then hands you a fix prompt built from the findings you keep.",
+    tags: ["typescript", "next.js", "playwright", "vitest"],
   },
   {
     name: "mark85",

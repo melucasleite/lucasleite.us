@@ -204,7 +204,7 @@ export default function Home() {
           title="building in public"
           note="open source, all of it"
         >
-          {/* Code Factory and Age of Potatoes are open too, but they already
+          {/* Desloper and Age of Potatoes are open too, but they already
               lead the shipping section; their pages still live at /projects. */}
           <Explorer repos={REPOS.filter((r) => !r.site)} />
         </Section>
