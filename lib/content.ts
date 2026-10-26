@@ -67,7 +67,7 @@ export const LIVE: Live[] = [
     url: "https://www.reef64.com",
     shot: "/shots/reef64.jpg",
     blurb:
-      "Reef intelligence + automation. An AI reads your reef tank from probes, a camera and your test results, works out what it needs, and the doser beside it delivers, in small steps around the clock.",
+      "Reef intelligence + automation. An AI reads your reef tank from probes, a camera and your test results, works out what it needs, and once you approve, the doser beside it makes the fix in 12 small doses a day. In private beta.",
     tags: ["ai", "iot", "dosing hardware", "ios app"],
   },
   {
