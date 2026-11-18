@@ -27,13 +27,13 @@ set in Inter, so it stays comfortable to read.
 Take what's useful: ASCII art drawn as SVG, a CSS-only projects explorer, and project pages that render each
 repo's README with no token.
 
-| Section         | What's in it                                                                   |
-| --------------- | ------------------------------------------------------------------------------ |
-| **hero**        | Block-letter banner, a voxel rescue robot, the headline and one call to action |
-| **01 shipping** | Live products with real screenshots: Desloper, REEF64, G22, Age of Potatoes    |
-| **02 work**     | Career as a `git log`: roles and outcomes, no company names                    |
-| **03 projects** | An editor-style explorer: a `tree` of the other open-source repos              |
-| **04 lab**      | The hardware hall of fame: robots and machines, with their Medium build logs   |
+| Section         | What's in it                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------- |
+| **hero**        | Block-letter banner, a voxel rescue robot, the headline and one call to action                |
+| **01 shipping** | Live products with real screenshots: Desloper, REEF64, G22, Age of Potatoes, Rex, Hinata Farm |
+| **02 work**     | Career as a `git log`: roles and outcomes, PepsiCo named                                      |
+| **03 projects** | An editor-style explorer: a `tree` of the other open-source repos                             |
+| **04 lab**      | The hardware hall of fame: robots and machines, with their Medium build logs                  |
 
 <details>
 <summary><b>See the whole page</b></summary>
