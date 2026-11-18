@@ -237,30 +237,163 @@ ol {
 .robot {
   width: min(340px, 92%);
   height: auto;
+  /* a foot swings a little past the edge of the drawing */
+  overflow: visible;
   filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45));
 }
-/* Rex at rest: the head looks around, the eyes and antenna blink, and
-   nothing walks. He hasn't yet. */
-.robot .head {
-  animation: scan 6s ease-in-out infinite;
+/* Rex on an eight-second loop. He takes two strides of his tripod gait on
+   the spot and steps home, one tripod at a time, the way his real gait
+   settles. Then he stands and looks left and right. A half step is 5% of
+   the loop, 0.4s.
+
+   Each leg is six columns. A column follows the foot fore and aft by --k
+   and up by --l, so the leg swings from the hip. The units are voxels:
+   1.2 forward is 1.2 right and 0.6 down in this projection. */
+.robot .col {
+  animation:
+    rex-stride-a 8s infinite,
+    rex-lift-a 8s infinite;
+}
+.robot .col.b {
+  animation-name: rex-stride-b, rex-lift-b;
+}
+/* Tripod a goes first: swing out, then stance and swing in turn. A planted
+   foot slides back at a steady pace; a foot in the air eases out and in. */
+@keyframes rex-stride-a {
+  0% {
+    translate: 0 0;
+    animation-timing-function: ease-in-out;
+  }
+  5%,
+  15% {
+    translate: calc(var(--k) * 1.2px) calc(var(--k) * 0.6px);
+    animation-timing-function: linear;
+  }
+  10%,
+  20% {
+    translate: calc(var(--k) * -1.2px) calc(var(--k) * -0.6px);
+    animation-timing-function: ease-in-out;
+  }
+  25%,
+  100% {
+    translate: 0 0;
+  }
+}
+/* Tripod b starts planted, and is the last to step home. */
+@keyframes rex-stride-b {
+  0% {
+    translate: 0 0;
+    animation-timing-function: linear;
+  }
+  5%,
+  15% {
+    translate: calc(var(--k) * -1.2px) calc(var(--k) * -0.6px);
+    animation-timing-function: ease-in-out;
+  }
+  10% {
+    translate: calc(var(--k) * 1.2px) calc(var(--k) * 0.6px);
+    animation-timing-function: linear;
+  }
+  20% {
+    translate: calc(var(--k) * 1.2px) calc(var(--k) * 0.6px);
+  }
+  25% {
+    translate: calc(var(--k) * 1.2px) calc(var(--k) * 0.6px);
+    animation-timing-function: ease-in-out;
+  }
+  30%,
+  100% {
+    translate: 0 0;
+  }
+}
+/* The foot's arc: up fast and down fast, like the sine in his gait code. */
+@keyframes rex-lift-a {
+  0%,
+  5%,
+  10%,
+  15%,
+  20%,
+  25%,
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  2.5%,
+  12.5%,
+  22.5% {
+    transform: translateY(calc(var(--l) * -1.2px));
+    animation-timing-function: ease-in;
+  }
+}
+@keyframes rex-lift-b {
+  0%,
+  5%,
+  10%,
+  15%,
+  20%,
+  25%,
+  30%,
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  7.5%,
+  17.5%,
+  27.5% {
+    transform: translateY(calc(var(--l) * -1.2px));
+    animation-timing-function: ease-in;
+  }
+}
+/* The head swivels on its neck, about seven degrees each way. Seen from
+   here a turn does two things: every slab of the head slides sideways by
+   its depth (--u), and the whole head shears a little about the neck. */
+.robot .neck {
+  animation: rex-look 8s ease-in-out infinite;
+}
+.robot .slab {
+  animation: rex-look-slab 8s ease-in-out infinite;
+}
+@keyframes rex-look {
+  0%,
+  36%,
+  58%,
+  66%,
+  88%,
+  100% {
+    transform: skewY(0deg);
+  }
+  42%,
+  52% {
+    transform: skewY(3.4deg);
+  }
+  72%,
+  82% {
+    transform: skewY(-3.4deg);
+  }
+}
+@keyframes rex-look-slab {
+  0%,
+  36%,
+  58%,
+  66%,
+  88%,
+  100% {
+    translate: 0 0;
+  }
+  42%,
+  52% {
+    translate: calc(var(--u) * -0.12px) 0;
+  }
+  72%,
+  82% {
+    translate: calc(var(--u) * 0.12px) 0;
+  }
 }
 .robot .eye {
   animation: blink 3.4s ease-in-out infinite;
 }
 .robot .led {
   animation: blink 1.6s steps(1) infinite;
-}
-@keyframes scan {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  30% {
-    transform: translateX(-0.45px);
-  }
-  65% {
-    transform: translateX(0.45px);
-  }
 }
 @keyframes blink {
   0%,

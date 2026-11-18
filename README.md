@@ -77,8 +77,14 @@ strokes for the drop shadow. The gradient fill drifts with a little SMIL.
 **The robot is voxels.** It's Rex, the hexapod I'm building at [rexwalks.vercel.app](https://rexwalks.vercel.app):
 a bone helmet with a round face screen, a teal deck, a battery box under the nose and six legs.
 [`art.tsx`](app/art.tsx) builds him from a few dozen `box()` calls, projects each cube 2:1, sorts back to front
-and keeps only the faces that aren't buried against a neighbor, all at build time, so he ships as plain SVG. CSS
-does the rest: the head looks around, and the eyes and the antenna blink. He doesn't walk on the page either.
+and keeps only the faces that aren't buried against a neighbor, all at build time, so he ships as plain SVG.
+
+**He walks, in CSS.** Every eight seconds Rex takes two strides of his tripod gait on the spot, steps home one
+tripod at a time, then looks left and right. The schedule comes from his own motion code: front-left, rear-left
+and mid-right lift together, the other three half a cycle later. Each leg is six columns of voxels; a column
+follows the foot by a share that is zero at the hip and one at the foot, so the leg swings from the hip. The head
+is cut into slabs of equal depth, and a turn slides each slab sideways by its depth, which is what a small swivel
+looks like from this angle. No JavaScript, and it stops under `prefers-reduced-motion`.
 
 **Readability first.** Mono at accent sizes only. Inter for paragraphs at 16.5px / 1.65, `max-width` in `ch`.
 ASCII flourishes (`[tags]`, `+` bullets, `01 ---- title` rules) use plain latin characters, so they line up in
