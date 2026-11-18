@@ -140,7 +140,7 @@ export default function Home() {
           <div className="hero-art" aria-hidden="true">
             <Robot />
             <pre className="caption">
-              {"// this is rex.\n// six legs, zero steps."}
+              {"// this is rex. he only\n// walks on this page."}
             </pre>
           </div>
         </section>

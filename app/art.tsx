@@ -92,10 +92,16 @@ export function Banner() {
 // isometric voxels. A bone helmet with a round face screen, a teal deck and
 // six legs, built from little cubes and drawn as flat-shaded faces at build
 // time, so it ships as plain SVG.
+//
+// He moves the way his own motion code says he will (rex/src/motion). The
+// gait is the tripod: front-left, rear-left and mid-right lift together, the
+// other three half a cycle later. The neck is one servo that swivels the
+// head. Both are CSS on groups of faces; see `.robot` in globals.css.
 
 type Mat = keyof typeof SHADES;
-type Part = "body" | "head";
 type Glow = "eye" | "led" | undefined;
+type Face = { fill: string; d: string; glow: Glow };
+type Side = "near" | "far";
 
 // top, front (+x) and side (+y) shades per material: Rex's own bone,
 // charcoal, teal and orange, nudged toward Catppuccin Mocha.
@@ -111,22 +117,29 @@ const SHADES = {
   led: ["#fab387", "#fab387", "#e0955f"],
 } as const;
 
+// Which tripod each leg belongs to, front to rear. His left is the near side.
+const TRIPOD = { near: ["a", "b", "a"], far: ["b", "a", "b"] } as const;
+// A leg is six columns of voxels, counted out from the hull.
+const COLS = [1, 2, 3, 4, 5, 6];
+
 function buildRex() {
-  const v = new Map<string, [number, number, number, Mat, Part]>();
+  // Every voxel carries the group it is drawn (and moved) with: "body",
+  // "head", or a leg column such as "near0.4".
+  const v = new Map<string, [number, number, number, Mat, string]>();
   const key = (x: number, y: number, z: number) => `${x},${y},${z}`;
-  const put = (x: number, y: number, z: number, m: Mat, p: Part = "body") =>
-    v.set(key(x, y, z), [x, y, z, m, p]);
+  const put = (x: number, y: number, z: number, m: Mat, g = "body") =>
+    v.set(key(x, y, z), [x, y, z, m, g]);
   const cut = (x: number, y: number, z: number) => v.delete(key(x, y, z));
   const box = (
     [x0, x1]: [number, number],
     [y0, y1]: [number, number],
     [z0, z1]: [number, number],
     m: Mat,
-    p: Part = "body",
+    g = "body",
   ) => {
     for (let x = x0; x <= x1; x++)
       for (let y = y0; y <= y1; y++)
-        for (let z = z0; z <= z1; z++) put(x, y, z, m, p);
+        for (let z = z0; z <= z1; z++) put(x, y, z, m, g);
   };
 
   // Chassis: a charcoal tub with clipped corners, a teal deck, and the
@@ -142,11 +155,14 @@ function buildRex() {
   put(X1 + 2, Y0 + 2, B - 1, "orange");
 
   // Six legs, three a side. Each is a hip servo, a femur that climbs to the
-  // knee and a shin that drops to a pointed foot. `s` is the side (+1 near,
-  // -1 far, drawn in shadow) and `dx` splays the front and rear pairs.
-  const leg = (hx: number, s: 1 | -1, dx: -1 | 0 | 1) => {
+  // knee and a shin that drops to a pointed foot. `i` counts front to rear,
+  // `s` is the side (+1 near, -1 far, drawn in shadow) and `dx` splays the
+  // front and rear pairs. Each column is its own group, so a leg can swing
+  // from the hip without the hip leaving the hull.
+  const leg = (i: number, hx: number, s: 1 | -1, dx: -1 | 0 | 1) => {
     const hy = s > 0 ? Y1 : Y0;
     const at = (d: number) => [hx + Math.round(dx * d * 0.6), hy + s * d];
+    const col = (d: number) => `${s > 0 ? "near" : "far"}${i}.${d}`;
     const bone: Mat = s > 0 ? "bone" : "shade";
     // [distance from the hull, z from, z to, material]
     const cols: [number, number, number, Mat][] = [
@@ -159,21 +175,21 @@ function buildRex() {
     ];
     for (const [d, z0, z1, m] of cols) {
       const [x, y] = at(d);
-      box([x, x + 1], [y, y], [z0, z1], m);
+      box([x, x + 1], [y, y], [z0, z1], m, col(d));
     }
     // teal cap on the knee, orange band on the shin, a dark pointed foot
     const [kx, ky] = at(4);
-    box([kx, kx + 1], [ky, ky], [B + 4, B + 4], "teal");
+    box([kx, kx + 1], [ky, ky], [B + 4, B + 4], "teal", col(4));
     const [sx, sy] = at(6);
-    box([sx, sx + 1], [sy, sy], [B - 1, B - 1], "orange");
+    box([sx, sx + 1], [sy, sy], [B - 1, B - 1], "orange", col(6));
     const toe = sx + (dx < 0 ? 0 : 1);
     cut(2 * sx + 1 - toe, sy, 2);
-    box([toe, toe], [sy, sy], [0, 1], "char");
+    box([toe, toe], [sy, sy], [0, 1], "char", col(6));
   };
   for (const s of [1, -1] as const) {
-    leg(X1 - 2, s, 1);
-    leg(X0 + 5, s, 0);
-    leg(X0 + 1, s, -1);
+    leg(0, X1 - 2, s, 1);
+    leg(1, X0 + 5, s, 0);
+    leg(2, X0 + 1, s, -1);
   }
 
   // Head: a bone helmet with the corners knocked off, and the round face
@@ -215,6 +231,13 @@ function buildRex() {
   );
   put(hx0 + 1, hy0 + 2, top + 3, "led", "head");
 
+  // The neck's axis runs up through the middle of the helmet. A small turn
+  // about it moves a point sideways on screen in proportion to its depth
+  // (x + y), so the head is cut into slabs of equal depth, far to near, and
+  // each slab slides by its own amount. `u` is a slab's depth from the axis.
+  const [ax, ay] = [(hx0 + hx1 + 1) / 2, (hy0 + hy1 + 1) / 2];
+  const depth = (x: number, y: number) => x + y + 1 - ax - ay;
+
   // Isometric 2:1 projection; draw back to front, and only faces that
   // aren't buried against a neighbor.
   const xs: number[] = [];
@@ -224,11 +247,12 @@ function buildRex() {
     ys.push((x + y) / 2 - z);
     return `${x - y},${(x + y) / 2 - z}`;
   };
-  const faces: { part: Part; fill: string; d: string; glow: Glow }[] = [];
+  const groups = new Map<string, Face[]>();
+  const slabs = new Set<number>();
   const sorted = [...v.values()].sort(
     (a, b) => a[0] + a[1] + a[2] - (b[0] + b[1] + b[2]) || a[2] - b[2],
   );
-  for (const [x, y, z, m, part] of sorted) {
+  for (const [x, y, z, m, g] of sorted) {
     const quads: [number, string[]][] = [];
     if (!v.has(key(x, y, z + 1)))
       quads.push([
@@ -260,9 +284,13 @@ function buildRex() {
           iso(x, y + 1, z),
         ],
       ]);
+    if (!quads.length) continue;
+    const name = g === "head" ? `head.${depth(x, y)}` : g;
+    if (g === "head") slabs.add(depth(x, y));
+    const faces = groups.get(name) ?? [];
+    groups.set(name, faces);
     for (const [shade, pts] of quads)
       faces.push({
-        part,
         fill: SHADES[m][shade],
         d: `M${pts.join("L")}Z`,
         glow: m === "eye" ? "eye" : m === "led" ? "led" : undefined,
@@ -270,27 +298,57 @@ function buildRex() {
   }
   const [x0, y0] = [Math.min(...xs) - 0.5, Math.min(...ys) - 0.5];
   const view = `${x0} ${y0} ${Math.max(...xs) + 0.5 - x0} ${Math.max(...ys) + 0.5 - y0}`;
-  return { faces, view };
+  return {
+    groups,
+    view,
+    slabs: [...slabs].sort((a, b) => a - b),
+    // where the neck's axis falls on screen
+    neck: ax - ay,
+  };
 }
 
 const REX = buildRex();
 
-function Faces({ part }: { part: Part }) {
-  return REX.faces
-    .filter((f) => f.part === part)
-    .map((f, i) => (
-      <path
-        key={i}
-        d={f.d}
-        fill={f.fill}
-        stroke={f.fill}
-        strokeWidth="0.1"
-        strokeLinejoin="round"
-        className={f.glow}
-      />
-    ));
+// `seam` is the stroke that closes the hairline between neighbouring faces.
+// The head's is wider, to cover its slabs sliding past each other.
+function Faces({ of, seam = 0.1 }: { of: string; seam?: number }) {
+  return (REX.groups.get(of) ?? []).map((f, i) => (
+    <path
+      key={i}
+      d={f.d}
+      fill={f.fill}
+      stroke={f.fill}
+      strokeWidth={seam}
+      strokeLinejoin="round"
+      className={f.glow}
+    />
+  ));
 }
 
+// One leg, column by column. `--k` is how far a column follows the foot
+// fore and aft (none at the hip, all of it at the foot) and `--l` how much
+// of the lift it gets (the femur hinges up from the hip; knee and shin go
+// all the way).
+function Leg({ side, i }: { side: Side; i: number }) {
+  return (side === "near" ? COLS : [...COLS].reverse()).map((d) => (
+    <g
+      key={d}
+      className={`col ${TRIPOD[side][i]}`}
+      style={
+        {
+          "--k": (d - 1) / 5,
+          "--l": Math.min(1, +((d - 1) / 3).toFixed(2)),
+        } as React.CSSProperties
+      }
+    >
+      <Faces of={`${side}${i}.${d}`} />
+    </g>
+  ));
+}
+
+// Painted back to front: the far legs, the body, the head, the near legs.
+// On each side the rear leg comes first, and a leg's columns run away from
+// or toward the viewer, so nothing changes order while he moves.
 export function Robot({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -299,10 +357,28 @@ export function Robot({ className = "" }: { className?: string }) {
       role="img"
       aria-label="Rex, a six-legged robot drawn in isometric voxels: a bone-white helmet with a round face screen and two cyan eyes, on a teal and charcoal body"
     >
-      <Faces part="body" />
-      <g className="head">
-        <Faces part="head" />
+      {[2, 1, 0].map((i) => (
+        <Leg key={i} side="far" i={i} />
+      ))}
+      <Faces of="body" />
+      <g transform={`translate(${REX.neck} 0)`}>
+        <g className="neck">
+          <g transform={`translate(${-REX.neck} 0)`}>
+            {REX.slabs.map((u) => (
+              <g
+                key={u}
+                className="slab"
+                style={{ "--u": u } as React.CSSProperties}
+              >
+                <Faces of={`head.${u}`} seam={0.28} />
+              </g>
+            ))}
+          </g>
+        </g>
       </g>
+      {[2, 1, 0].map((i) => (
+        <Leg key={i} side="near" i={i} />
+      ))}
     </svg>
   );
 }
