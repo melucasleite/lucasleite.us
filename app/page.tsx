@@ -140,7 +140,13 @@ export default function Home() {
           <div className="hero-art" aria-hidden="true">
             <Robot />
             <pre className="caption">
-              {"// this is rex. he only\n// walks on this page."}
+              <span className="says">
+                {"// this is rex. he only\n// walks on this page."}
+              </span>
+              {/* what he says once you have tapped him */}
+              <span className="says-hal">
+                {"// i'm sorry, dave. i'm\n// afraid i can't walk."}
+              </span>
             </pre>
           </div>
         </section>
