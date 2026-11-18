@@ -99,8 +99,9 @@ export function Banner() {
 // head. Both are CSS on groups of faces; see `.robot` in globals.css.
 
 type Mat = keyof typeof SHADES;
-type Glow = "eye" | "led" | undefined;
-type Face = { fill: string; d: string; glow: Glow };
+// `cls` is what CSS hangs on a face: "eye" and "led" blink, and the
+// "hal-*" ones are the nine cells of the screen that light up red.
+type Face = { fill: string; d: string; cls?: string };
 type Side = "near" | "far";
 
 // top, front (+x) and side (+y) shades per material: Rex's own bone,
@@ -219,6 +220,15 @@ function buildRex() {
     }
   for (const y of [cy - 1, cy + 1])
     for (const z of [cz - 1, cz, cz + 1]) put(hx1 + 1, y, z, "eye", "head");
+  // The easter egg. Tap him and the middle of the screen becomes one red
+  // eye: a bright core, a red cross around it, darker red in the corners.
+  const hal = new Map<string, string>();
+  for (const dy of [-1, 0, 1])
+    for (const dz of [-1, 0, 1])
+      hal.set(
+        key(hx1 + 1, cy + dy, cz + dz),
+        !dy && !dz ? "hal-core" : !dy || !dz ? "hal-in" : "hal-out",
+      );
 
   // Ear servo on the near cheek, antenna with a blinking tip.
   put(hx0 + 2, hy1 + 1, H + 3, "orange", "head");
@@ -293,7 +303,10 @@ function buildRex() {
       faces.push({
         fill: SHADES[m][shade],
         d: `M${pts.join("L")}Z`,
-        glow: m === "eye" ? "eye" : m === "led" ? "led" : undefined,
+        cls:
+          [m === "eye" || m === "led" ? m : "", hal.get(key(x, y, z)) ?? ""]
+            .join(" ")
+            .trim() || undefined,
       });
   }
   const [x0, y0] = [Math.min(...xs) - 0.5, Math.min(...ys) - 0.5];
@@ -320,7 +333,7 @@ function Faces({ of, seam = 0.1 }: { of: string; seam?: number }) {
       stroke={f.fill}
       strokeWidth={seam}
       strokeLinejoin="round"
-      className={f.glow}
+      className={f.cls}
     />
   ));
 }
@@ -349,7 +362,20 @@ function Leg({ side, i }: { side: Side; i: number }) {
 // Painted back to front: the far legs, the body, the head, the near legs.
 // On each side the rear leg comes first, and a leg's columns run away from
 // or toward the viewer, so nothing changes order while he moves.
+//
+// The label and its hidden checkbox are the easter egg's switch: a tap on
+// the drawing ticks the box, and CSS repaints the eyes. No JavaScript. The
+// box is `hidden`, so the keyboard and screen readers never meet it.
 export function Robot({ className = "" }: { className?: string }) {
+  return (
+    <label className="rex">
+      <input type="checkbox" hidden />
+      <RexSvg className={className} />
+    </label>
+  );
+}
+
+function RexSvg({ className }: { className: string }) {
   return (
     <svg
       className={`robot ${className}`}

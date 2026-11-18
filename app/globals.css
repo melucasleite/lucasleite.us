@@ -395,6 +395,49 @@ ol {
 .robot .led {
   animation: blink 1.6s steps(1) infinite;
 }
+/* The easter egg: tap Rex and he turns into HAL 9000. The label around the
+   drawing ticks a hidden checkbox; while it is ticked the two cyan eyes go
+   dark and the nine cells in the middle of the screen become one red eye,
+   which never blinks. Tap again and he is himself. */
+.rex {
+  display: contents;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.rex input:checked ~ .robot .eye {
+  fill: #11111b;
+  stroke: #11111b;
+  animation: none;
+}
+.rex input:checked ~ .robot :is(.hal-core, .hal-in, .hal-out) {
+  fill: currentColor;
+  stroke: currentColor;
+}
+.rex input:checked ~ .robot .hal-core {
+  color: #ffd9a0;
+}
+.rex input:checked ~ .robot .hal-in {
+  color: #e01b28;
+  animation: hal 2.6s ease-in-out infinite;
+}
+.rex input:checked ~ .robot .hal-out {
+  color: #8a1019;
+}
+/* the glow breathes, slowly */
+@keyframes hal {
+  50% {
+    color: #ff4a44;
+  }
+}
+/* and he says something else */
+.says-hal,
+.hero-art:has(.rex input:checked) .says {
+  display: none;
+}
+.hero-art:has(.rex input:checked) .says-hal {
+  display: inline;
+  color: #f0222e;
+}
 @keyframes blink {
   0%,
   44%,
