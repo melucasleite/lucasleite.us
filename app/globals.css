@@ -408,11 +408,14 @@ ol {
   font-size: 13px;
   color: var(--overlay);
   min-width: 64px;
+  white-space: nowrap;
 }
+/* Six dots don't fit a phone at full width; let them shrink, not the count. */
 .carousel-nav .dots {
   display: flex;
   gap: 8px;
   flex: 1;
+  min-width: 0;
 }
 .carousel-nav .dots button {
   width: 22px;
