@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://www.lucasleite.us"><img src="docs/hero.jpg" alt="lucasleite.us: a LUCAS LEITE block-letter banner and an isometric voxel rescue robot on a Catppuccin glass background" width="100%"></a>
+<a href="https://www.lucasleite.us"><img src="docs/hero.jpg" alt="lucasleite.us: a LUCAS LEITE block-letter banner and Rex, a six-legged robot drawn in isometric voxels, on a Catppuccin glass background" width="100%"></a>
 
 # lucasleite.us
 
@@ -29,11 +29,10 @@ repo's README with no token.
 
 | Section         | What's in it                                                                                  |
 | --------------- | --------------------------------------------------------------------------------------------- |
-| **hero**        | Block-letter banner, a voxel rescue robot, the headline and one call to action                |
-| **01 shipping** | Live products with real screenshots: Desloper, REEF64, G22, Age of Potatoes, Rex, Hinata Farm |
+| **hero**        | Block-letter banner, Rex the hexapod in voxels, the headline and one call to action           |
+| **01 shipping** | Live products with real screenshots: Hinata Farm, REEF64, G22, Rex, Desloper, Age of Potatoes |
 | **02 work**     | Career as a `git log`: roles and outcomes, PepsiCo named                                      |
 | **03 projects** | An editor-style explorer: a `tree` of the other open-source repos                             |
-| **04 lab**      | The hardware hall of fame: robots and machines, with their Medium build logs                  |
 
 <details>
 <summary><b>See the whole page</b></summary>
@@ -51,17 +50,16 @@ app/
 ├── projects/       /projects index + one page per repo, README pulled from GitHub
 ├── api/revalidate/ the GitHub push webhook that refreshes a project's README
 ├── explorer.tsx    the projects explorer: a CSS-only tree + README panes, no JS
-├── art.tsx         <Banner/> and <Robot/>: the ASCII banner and the voxel rover, drawn as SVG
+├── art.tsx         <Banner/> and <Robot/>: the ASCII banner and the voxel Rex, drawn as SVG
 ├── globals.css     Catppuccin palette, glass, wallpaper, responsive layout
 ├── icon.svg        the ❯_ favicon
 ├── apple-icon.tsx  the same mark as a PNG, for iOS home screens
 ├── opengraph-image.jpg  the share card (+ .alt.txt), used for og: and twitter:
 └── robots.ts · sitemap.ts · manifest.ts   crawl rules, sitemap with images, web manifest
 lib/
-└── content.ts      all copy and data: stats, live sites, career, repos, lab, posts
+└── content.ts      all copy and data: live sites, career, repos, stack
 public/
-├── shots/          homepage screenshots of the live products
-└── lab/            photos of the hardware builds
+└── shots/          screenshots of the live products and the repos
 docs/               README images
 ```
 
@@ -76,11 +74,11 @@ font with different widths and scrambles the letters. [`art.tsx`](app/art.tsx) r
 time and draws it instead: every `█` becomes a `<rect>`, and every box-drawing character becomes a pair of
 strokes for the drop shadow. The gradient fill drifts with a little SMIL.
 
-**The robot is voxels.** An isometric rescue rover in the spirit of the lab's Heimdall: twin tracks that wrap
-the whole hull, an armored deck, a gripper and a camera mast. [`art.tsx`](app/art.tsx) builds it from a few
-dozen `box()` calls, projects each cube 2:1, sorts back to front and keeps only the faces that aren't buried
-against a neighbor, all at build time, so it ships as plain SVG (about 5 KB gzipped). CSS does the rest: the
-camera head scans, the lenses blink, the beacon pulses.
+**The robot is voxels.** It's Rex, the hexapod I'm building at [rexwalks.vercel.app](https://rexwalks.vercel.app):
+a bone helmet with a round face screen, a teal deck, a battery box under the nose and six legs.
+[`art.tsx`](app/art.tsx) builds him from a few dozen `box()` calls, projects each cube 2:1, sorts back to front
+and keeps only the faces that aren't buried against a neighbor, all at build time, so he ships as plain SVG. CSS
+does the rest: the head looks around, and the eyes and the antenna blink. He doesn't walk on the page either.
 
 **Readability first.** Mono at accent sizes only. Inter for paragraphs at 16.5px / 1.65, `max-width` in `ch`.
 ASCII flourishes (`[tags]`, `+` bullets, `01 ---- title` rules) use plain latin characters, so they line up in

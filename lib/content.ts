@@ -1,6 +1,5 @@
 // Everything the page says lives here. PepsiCo is the only employer named.
 
-const MEDIUM = "https://lucasleite-us.medium.com/";
 const GH = "https://github.com/melucasleite/";
 
 export const SITE = {
@@ -51,16 +50,14 @@ export type Live = {
 
 export const LIVE: Live[] = [
   {
-    name: "Desloper",
-    kinds: ["web", "ai", "devtools"],
-    url: "https://ai-desloper.vercel.app",
-    shot: "/shots/desloper.jpg",
+    name: "Hinata Farm",
+    kinds: ["game", "mobile"],
+    url: "https://hinatafarm.app",
+    shot: "/shots/hinata-farm.jpg",
     blurb:
-      "Paste a landing page and Desloper scores how generic it reads, shows every finding with evidence, then writes the prompt your own AI coding tool needs to fix it on your stack.",
-    tags: ["next.js", "ai sdk", "playwright", "supabase"],
+      "A cosy self-care game for dietitians, therapists and professors. They set a few gentle daily habits, and each one a client checks off grows a little pixel farm of their own. No streaks, no leaderboards, built for HIPAA. Coming soon to iPhone and iPad.",
+    tags: ["pixel art", "habit game", "ios", "built for hipaa"],
   },
-  // Code Factory is hidden for now; restore it from git (shot is still in
-  // public/shots/code-factory-board.jpg).
   {
     name: "REEF64",
     kinds: ["ai", "hardware", "mobile", "web"],
@@ -80,15 +77,6 @@ export const LIVE: Live[] = [
     tags: ["3d printing", "manufacturing", "web platform"],
   },
   {
-    name: "Age of Potatoes",
-    kinds: ["game", "web"],
-    url: "https://ageofpotatoes.com",
-    shot: "/shots/potatoes.jpg",
-    blurb:
-      "A browser factory/farming tycoon: build a chips-and-soda empire from a weedy roadside lot. Deterministic simulation, pixel art, synthesized audio.",
-    tags: ["typescript", "next.js", "pixijs", "supabase"],
-  },
-  {
     name: "Rex the spider",
     kinds: ["hardware", "ai", "maker"],
     url: "https://rexwalks.vercel.app",
@@ -98,14 +86,25 @@ export const LIVE: Live[] = [
     tags: ["openscad", "typescript", "python", "on-device ai"],
   },
   {
-    name: "Hinata Farm",
-    kinds: ["game", "mobile"],
-    url: "https://hinatafarm.app",
-    shot: "/shots/hinata-farm.jpg",
+    name: "Desloper",
+    kinds: ["web", "ai", "devtools"],
+    url: "https://ai-desloper.vercel.app",
+    shot: "/shots/desloper.jpg",
     blurb:
-      "A cosy self-care game for dietitians, therapists and professors. They set a few gentle daily habits, and each one a client checks off grows a little pixel farm of their own. No streaks, no leaderboards, built for HIPAA. Coming soon to iPhone and iPad.",
-    tags: ["pixel art", "habit game", "ios", "built for hipaa"],
+      "Paste a landing page and Desloper scores how generic it reads, shows every finding with evidence, then writes the prompt your own AI coding tool needs to fix it on your stack.",
+    tags: ["next.js", "ai sdk", "playwright", "supabase"],
   },
+  {
+    name: "Age of Potatoes",
+    kinds: ["game", "web"],
+    url: "https://ageofpotatoes.com",
+    shot: "/shots/potatoes.jpg",
+    blurb:
+      "A browser factory/farming tycoon: build a chips-and-soda empire from a weedy roadside lot. Deterministic simulation, pixel art, synthesized audio.",
+    tags: ["typescript", "next.js", "pixijs", "supabase"],
+  },
+  // Code Factory is hidden for now; restore it from git (shot is still in
+  // public/shots/code-factory-board.jpg).
 ];
 
 export const CAREER = [
@@ -235,61 +234,6 @@ export const REPOS: Repo[] = [
     blurb:
       "The source behind ageofpotatoes.com, golden-file tests for the deterministic sim included.",
     tags: ["typescript", "pixijs"],
-  },
-];
-
-export type Build = {
-  name: string;
-  img: string;
-  url: string;
-  blurb: string;
-  year?: string;
-};
-
-export const LAB: Build[] = [
-  {
-    name: "Amazon-e",
-    img: "/lab/amazone.jpg",
-    url:
-      MEDIUM +
-      "amazon-e-ia-powered-autonomous-park-cleaning-robot-6d99c95fba59",
-    blurb:
-      "AI-powered park-cleaning robot. C down low, Python up top. 1st place worldwide, $10k grand prize.",
-    year: "2017",
-  },
-  {
-    name: "Heimdall",
-    img: "/lab/heimdall.jpg",
-    url: MEDIUM + "heimdall-a-rescue-robot-e999a4e0d470",
-    blurb:
-      "Tracked rescue robot, designed in CAD and driven by a Raspberry Pi.",
-  },
-  {
-    name: "Hexapod",
-    img: "/lab/hexapod.jpg",
-    url: MEDIUM + "hexapod-robot-with-18-servos-ef4fcbbd12e",
-    blurb:
-      "Six legs, 18 servos, aluminium chassis. Gait written in Python and streamed over serial.",
-  },
-  {
-    name: "Hydroponics",
-    img: "/lab/hydro.jpg",
-    url: MEDIUM + "building-a-fully-automated-hydroponic-system-cea759412ef1",
-    blurb:
-      "Fully automated grow system: 3D-printed dosing modules, Arduino + Pi, a Next.js controller.",
-  },
-  {
-    name: "Smart Ink Filler",
-    img: "/lab/ink.jpg",
-    url: MEDIUM + "smart-ink-filler-fffab733004b",
-    blurb: "4-channel peristaltic dosing machine. Under 1 ml error at 12 ml/s.",
-  },
-  {
-    name: "Leaf",
-    img: "/lab/leaf.jpg",
-    url:
-      MEDIUM + "leaf-take-out-the-mystery-of-growing-your-plants-8d98d5e69178",
-    blurb: "Home gardening assistant: soil sensor, water valve and an app.",
   },
 ];
 
