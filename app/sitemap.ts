@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { LAB, LIVE, REPOS, SITE } from "@/lib/content";
+import { LIVE, REPOS, SITE } from "@/lib/content";
 
 // The homepage with every image on it, then the projects index and one
 // page per project.
@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...[...new Set([...LIVE, ...REPOS].flatMap((p) => p.shot ?? []))].map(
           (shot) => SITE.url + shot,
         ),
-        ...LAB.map((b) => SITE.url + b.img),
       ],
     },
     {

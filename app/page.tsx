@@ -5,7 +5,7 @@ import { Carousel } from "./carousel";
 import { Explorer } from "./explorer";
 import { Kinds } from "./kinds";
 import { Work } from "./work";
-import { CTA, LAB, LINKS, LIVE, REPOS, SITE, STACK } from "@/lib/content";
+import { CTA, LINKS, LIVE, REPOS, SITE, STACK } from "@/lib/content";
 
 function Section({
   id,
@@ -119,8 +119,8 @@ export default function Home() {
             </p>
             <Banner />
             <h1>
-              From circuit board to cloud, I build it and{" "}
-              <em>keep it running</em>.
+              The best problems sit between hardware and software, where nobody
+              owns them. <em>I like those.</em>
             </h1>
             <p className="sub">
               I&apos;m a control &amp; automation engineer turned principal
@@ -140,7 +140,7 @@ export default function Home() {
           <div className="hero-art" aria-hidden="true">
             <Robot />
             <pre className="caption">
-              {"// beep boop.\n// it won a world title once."}
+              {"// this is rex.\n// six legs, zero steps."}
             </pre>
           </div>
         </section>
@@ -204,40 +204,10 @@ export default function Home() {
           title="building in public"
           note="open source, all of it"
         >
-          {/* Desloper and Age of Potatoes are open too, but they already
-              lead the shipping section; their pages still live at /projects. */}
+          {/* Desloper and Age of Potatoes are open too, but they are
+              already in the shipping section; their pages still live at
+              /projects. */}
           <Explorer repos={REPOS.filter((r) => !r.site)} />
-        </Section>
-
-        <Section id="lab" n="04" title="the lab" note="robots and machines">
-          {/* TODO(owner): confirm this is why you build, in your words. */}
-          <p className="work-lede">
-            I started with robots because a machine either works or it
-            doesn&apos;t. I still hold software to that. I write them up as{" "}
-            <a href={LINKS.medium} {...ext}>
-              <em>seven build logs on Medium</em>
-            </a>
-            , 2023 to 2024.
-          </p>
-          <Carousel id="lab-track" label="The lab" per={3}>
-            {LAB.map((b) => (
-              <a key={b.name} className="build glass" href={b.url} {...ext}>
-                <div className="photo">
-                  <Image
-                    src={b.img}
-                    alt={`${b.name}: ${b.blurb}`}
-                    fill
-                    sizes="(max-width: 760px) 85vw, 340px"
-                  />
-                  {b.year && (
-                    <span className="badge">1st place · {b.year}</span>
-                  )}
-                </div>
-                <h3>{b.name}</h3>
-                <p>{b.blurb}</p>
-              </a>
-            ))}
-          </Carousel>
         </Section>
 
         <Footer home />

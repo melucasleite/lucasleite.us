@@ -7,7 +7,6 @@ const NAV = [
   ["shipping", "#shipping"],
   ["work", "#work"],
   ["projects", "#projects"],
-  ["lab", "#lab"],
 ] as const;
 
 // Wallpaper and sticky nav, shared by every page. Off the homepage the
@@ -53,12 +52,12 @@ export function Footer({ home = false }: { home?: boolean }) {
   return (
     <footer className="footer">
       <pre className="box" aria-hidden="true">
-        {/* TODO(owner): confirm this is your opinion, in your words. */}
+        {/* The hero's old headline. The line that used to sit here is the
+            headline now, so the two swapped places. */}
         {asciiBox([
           // Kept under ~36 columns so the box fits a 375px phone.
-          "The best problems sit between",
-          "hardware and software, where",
-          "nobody owns them. I like those.",
+          "From circuit board to cloud,",
+          "I build it and keep it running.",
         ])}
       </pre>
       <div className="cta">

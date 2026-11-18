@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 // Arrows, dots and a counter for a Carousel track. Positions are counted
-// from what's visible, so a three-up lab has fewer stops than slides.
+// from what's visible, so a three-up carousel has fewer stops than slides.
 export function CarouselNav({
   track,
   count,

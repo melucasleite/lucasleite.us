@@ -184,9 +184,11 @@ ol {
   letter-spacing: -0.02em;
   max-width: 22ch;
 }
+/* the punchline never breaks in the middle */
 .hero h1 em {
   font-style: normal;
   color: var(--accent);
+  white-space: nowrap;
 }
 .sub {
   margin-top: 18px;
@@ -237,7 +239,8 @@ ol {
   height: auto;
   filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.45));
 }
-/* a parked rover: the camera head scans, lights blink, nothing floats */
+/* Rex at rest: the head looks around, the eyes and antenna blink, and
+   nothing walks. He hasn't yet. */
 .robot .head {
   animation: scan 6s ease-in-out infinite;
 }
@@ -246,9 +249,6 @@ ol {
 }
 .robot .led {
   animation: blink 1.6s steps(1) infinite;
-}
-.robot .beacon {
-  animation: beacon 1.2s ease-in-out infinite;
 }
 @keyframes scan {
   0%,
@@ -260,11 +260,6 @@ ol {
   }
   65% {
     transform: translateX(0.45px);
-  }
-}
-@keyframes beacon {
-  50% {
-    fill: #fab387;
   }
 }
 @keyframes blink {
@@ -514,18 +509,6 @@ ol {
 
 /* ---------- work ---------- */
 
-.work-lede {
-  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
-  line-height: 1.45;
-  font-weight: 550;
-  max-width: 40ch;
-  margin-bottom: 26px;
-}
-.work-lede em {
-  font-style: normal;
-  color: var(--accent);
-}
-
 .chapters > li {
   position: relative;
   display: grid;
@@ -733,56 +716,6 @@ ol {
 }
 .ex-pane .cta {
   margin-top: 6px;
-}
-
-/* ---------- lab ---------- */
-
-.build {
-  padding: 10px 10px 18px;
-  transition:
-    transform 0.25s,
-    border-color 0.25s;
-}
-.build:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-}
-.photo {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--mantle);
-}
-.photo img {
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
-}
-.build:hover .photo img {
-  transform: scale(1.04);
-}
-.badge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(17, 17, 27, 0.75);
-  color: var(--accent);
-}
-.build h3 {
-  font-family: var(--mono);
-  font-size: 1rem;
-  color: var(--accent);
-  margin: 14px 8px 4px;
-}
-.build p {
-  color: var(--subtext);
-  font-size: 14.5px;
-  line-height: 1.55;
-  margin: 0 8px;
 }
 
 /* ---------- writing ---------- */

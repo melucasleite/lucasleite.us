@@ -9,7 +9,7 @@ accent. See README.md for the tour.
 ## Map
 
 - `lib/content.ts`: every word and link on the site (`SITE`, `LINKS`, `LIVE`,
-  `REPOS`, `LAB`, `POSTS`, `STACK`). Change copy here, not in components.
+  `CAREER`, `REPOS`, `STACK`). Change copy here, not in components.
 - `app/page.tsx`: the homepage sections + its JSON-LD graph.
 - `app/chrome.tsx`: wallpaper, nav and footer shared by every page.
 - `app/explorer.tsx`: the projects explorer (CSS-only, see below).

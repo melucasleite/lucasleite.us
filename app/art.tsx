@@ -88,34 +88,35 @@ export function Banner() {
   );
 }
 
-// The hero robot: an isometric voxel rescue rover in the spirit of the lab's
-// Heimdall and Amazon-e. Twin tracks, armored deck, a camera mast and a
-// gripper, built from little cubes and drawn as flat-shaded faces at build
+// The hero robot: Rex, the hexapod butler from rexwalks.vercel.app, as
+// isometric voxels. A bone helmet with a round face screen, a teal deck and
+// six legs, built from little cubes and drawn as flat-shaded faces at build
 // time, so it ships as plain SVG.
 
 type Mat = keyof typeof SHADES;
 type Part = "body" | "head";
-type Glow = "eye" | "led" | "beacon" | undefined;
+type Glow = "eye" | "led" | undefined;
 
-// top, front (+x) and side (+y) shades per material, from Catppuccin Mocha.
+// top, front (+x) and side (+y) shades per material: Rex's own bone,
+// charcoal, teal and orange, nudged toward Catppuccin Mocha.
 const SHADES = {
-  body: ["#b4befe", "#8f99d8", "#6f78b0"],
-  panel: ["#89b4fa", "#6d93d0", "#5574a8"],
-  track: ["#45475a", "#36384a", "#2a2b3a"],
-  tread: ["#585b70", "#45475a", "#36384a"],
-  hub: ["#fab387", "#e0955f", "#c07a48"],
+  bone: ["#efe6d0", "#d3c9b0", "#b3a98f"],
+  shade: ["#b5ac96", "#9c937d", "#857d68"],
+  char: ["#45475a", "#36384a", "#2a2b3a"],
+  teal: ["#3cc4b8", "#2a9d93", "#1f7a72"],
+  orange: ["#fab387", "#e0955f", "#c07a48"],
   metal: ["#9399b2", "#7f849c", "#6c7086"],
   dark: ["#181825", "#11111b", "#0b0b12"],
-  lens: ["#fab387", "#fab387", "#e0955f"],
-  haz: ["#f9e2af", "#e5c890", "#c8ad72"],
-  led: ["#a6e3a1", "#a6e3a1", "#86c381"],
+  eye: ["#7df9ec", "#7df9ec", "#5fd8cc"],
+  led: ["#fab387", "#fab387", "#e0955f"],
 } as const;
 
-function buildRover() {
+function buildRex() {
   const v = new Map<string, [number, number, number, Mat, Part]>();
   const key = (x: number, y: number, z: number) => `${x},${y},${z}`;
   const put = (x: number, y: number, z: number, m: Mat, p: Part = "body") =>
     v.set(key(x, y, z), [x, y, z, m, p]);
+  const cut = (x: number, y: number, z: number) => v.delete(key(x, y, z));
   const box = (
     [x0, x1]: [number, number],
     [y0, y1]: [number, number],
@@ -127,84 +128,92 @@ function buildRover() {
       for (let y = y0; y <= y1; y++)
         for (let z = z0; z <= z1; z++) put(x, y, z, m, p);
   };
-  const L = 14;
 
-  // T is the deck height; the tracks run the full height of the hull.
-  const T = 8;
+  // Chassis: a charcoal tub with clipped corners, a teal deck, and the
+  // battery box slung under the nose. He faces +x. B is the belly height.
+  const [X0, X1, Y0, Y1] = [6, 16, 9, 17];
+  const B = 5;
+  box([X0, X1], [Y0, Y1], [B, B + 1], "char");
+  for (const x of [X0, X1])
+    for (const y of [Y0, Y1]) for (const z of [B, B + 1]) cut(x, y, z);
+  box([X0 + 1, X1 - 1], [Y0 + 1, Y1 - 1], [B + 2, B + 2], "teal");
+  box([X1 + 1, X1 + 2], [Y0 + 2, Y1 - 2], [B - 1, B], "teal");
+  for (const y of [Y0 + 3, Y1 - 3]) put(X1 + 2, y, B, "dark");
+  put(X1 + 2, Y0 + 2, B - 1, "orange");
 
-  // Tracks wrap the whole side, Heimdall style: a belt around chamfered
-  // corners with cleats over the top and both ends.
-  for (const y0 of [0, 10]) {
-    box([0, L], [y0, y0 + 1], [0, T], "track");
-    for (const y of [y0, y0 + 1]) {
-      for (const [x, z] of [
-        [0, 0],
-        [1, 0],
-        [0, 1],
-        [0, T],
-        [1, T],
-        [0, T - 1],
-        [L, 0],
-        [L - 1, 0],
-        [L, 1],
-        [L, T],
-        [L - 1, T],
-        [L, T - 1],
-      ])
-        v.delete(key(x, y, z));
-      for (let x = 2; x < L - 1; x += 2) put(x, y, T, "tread");
-      for (let z = 2; z < T - 1; z += 2) {
-        put(0, y, z, "tread");
-        put(L, y, z, "tread");
-      }
+  // Six legs, three a side. Each is a hip servo, a femur that climbs to the
+  // knee and a shin that drops to a pointed foot. `s` is the side (+1 near,
+  // -1 far, drawn in shadow) and `dx` splays the front and rear pairs.
+  const leg = (hx: number, s: 1 | -1, dx: -1 | 0 | 1) => {
+    const hy = s > 0 ? Y1 : Y0;
+    const at = (d: number) => [hx + Math.round(dx * d * 0.6), hy + s * d];
+    const bone: Mat = s > 0 ? "bone" : "shade";
+    // [distance from the hull, z from, z to, material]
+    const cols: [number, number, number, Mat][] = [
+      [1, B, B + 1, bone],
+      [2, B + 1, B + 2, "char"],
+      [3, B + 2, B + 3, "char"],
+      [4, B + 3, B + 4, "char"],
+      [5, B, B + 4, bone],
+      [6, 2, B + 1, bone],
+    ];
+    for (const [d, z0, z1, m] of cols) {
+      const [x, y] = at(d);
+      box([x, x + 1], [y, y], [z0, z1], m);
     }
-  }
-  // Inside the near track's loop: a side plate with drive sprockets at both
-  // ends and road wheels between them.
-  box([2, L - 2], [12, 12], [2, T - 2], "metal");
-  for (const cx of [3, L - 5]) {
-    box([cx, cx + 2], [13, 13], [2, 4], "dark");
-    put(cx + 1, 14, 3, "hub");
-  }
-  for (const cx of [7, 8]) put(cx, 13, 2, "dark");
-
-  // Armored hull between the tracks.
-  box([1, L - 1], [2, 9], [1, T], "body");
-  // Deck: blue inset, a hatch up front, vents at the back.
-  box([3, L - 3], [3, 8], [T, T], "panel");
-  for (let i = 0; i < 4; i++) {
-    put(7 + i, 4, T, "dark");
-    put(7 + i, 7, T, "dark");
-    put(7, 4 + i, T, "dark");
-    put(10, 4 + i, T, "dark");
-  }
-  for (const y of [3, 5, 7]) put(2, y, T, "dark");
-
-  // Front: hazard stripe, camera window with a lens, and a low gripper.
-  for (let y = 2; y <= 9; y++) put(L - 1, y, T, y % 2 ? "dark" : "haz");
-  box([L - 1, L - 1], [4, 7], [4, 6], "dark");
-  box([L, L], [5, 6], [5, 5], "lens");
-  box([L, L + 2], [5, 6], [1, 1], "metal");
-  for (const y of [4, 7]) {
-    put(L + 3, y, 1, "metal");
-    put(L + 3, y, 2, "hub");
+    // teal cap on the knee, orange band on the shin, a dark pointed foot
+    const [kx, ky] = at(4);
+    box([kx, kx + 1], [ky, ky], [B + 4, B + 4], "teal");
+    const [sx, sy] = at(6);
+    box([sx, sx + 1], [sy, sy], [B - 1, B - 1], "orange");
+    const toe = sx + (dx < 0 ? 0 : 1);
+    cut(2 * sx + 1 - toe, sy, 2);
+    box([toe, toe], [sy, sy], [0, 1], "char");
+  };
+  for (const s of [1, -1] as const) {
+    leg(X1 - 2, s, 1);
+    leg(X0 + 5, s, 0);
+    leg(X0 + 1, s, -1);
   }
 
-  // Warning beacon on the back corner.
-  box([2, 2], [9, 9], [T + 1, T + 2], "haz");
-  const beacon = new Set([key(2, 9, T + 1), key(2, 9, T + 2)]);
+  // Head: a bone helmet with the corners knocked off, and the round face
+  // screen on the front with two tall eyes.
+  const [hx0, hx1, hy0, hy1] = [8, 13, 10, 16];
+  const H = B + 3;
+  const top = H + 6;
+  box([hx0, hx1], [hy0, hy1], [H, top], "bone", "head");
+  const edge = (x: number, y: number) =>
+    (x === hx0 || x === hx1 ? 1 : 0) + (y === hy0 || y === hy1 ? 1 : 0);
+  for (let x = hx0; x <= hx1; x++)
+    for (let y = hy0; y <= hy1; y++) {
+      // vertical corners off all the way up, the rim off the top layer
+      if (edge(x, y) === 2) for (let z = H; z <= top; z++) cut(x, y, z);
+      if (edge(x, y) >= 1) cut(x, y, top);
+      // teal collar where the helmet meets the deck
+      if (v.has(key(x, y, H))) put(x, y, H, "teal", "head");
+    }
 
-  // Mast, tilt yoke, camera head with a visor and two lenses, antenna.
-  const M = T + 1;
-  box([4, 4], [5, 6], [M, M + 3], "metal", "head");
-  box([3, 6], [4, 7], [M + 4, M + 4], "metal", "head");
-  box([3, 7], [3, 8], [M + 5, M + 7], "body", "head");
-  box([3, 7], [3, 8], [M + 7, M + 7], "panel", "head");
-  box([7, 7], [3, 8], [M + 5, M + 6], "dark", "head");
-  put(8, 4, M + 6, "lens", "head");
-  put(8, 7, M + 6, "lens", "head");
-  box([3, 3], [8, 8], [M + 8, M + 10], "metal", "head");
-  put(3, 8, M + 11, "led", "head");
+  // The face: a teal ring around a dark screen, one voxel proud of the
+  // helmet, with an eye either side of the centre line.
+  const [cy, cz] = [(hy0 + hy1) / 2, H + 3];
+  for (let y = hy0; y <= hy1; y++)
+    for (let z = H; z <= top; z++) {
+      const r = Math.hypot(y - cy, z - cz);
+      if (r <= 3.3) put(hx1 + 1, y, z, r > 2.4 ? "teal" : "dark", "head");
+    }
+  for (const y of [cy - 1, cy + 1])
+    for (const z of [cz - 1, cz, cz + 1]) put(hx1 + 1, y, z, "eye", "head");
+
+  // Ear servo on the near cheek, antenna with a blinking tip.
+  put(hx0 + 2, hy1 + 1, H + 3, "orange", "head");
+  box(
+    [hx0 + 1, hx0 + 1],
+    [hy0 + 2, hy0 + 2],
+    [top + 1, top + 2],
+    "metal",
+    "head",
+  );
+  put(hx0 + 1, hy0 + 2, top + 3, "led", "head");
 
   // Isometric 2:1 projection; draw back to front, and only faces that
   // aren't buried against a neighbor.
@@ -256,14 +265,7 @@ function buildRover() {
         part,
         fill: SHADES[m][shade],
         d: `M${pts.join("L")}Z`,
-        glow:
-          m === "lens"
-            ? "eye"
-            : m === "led"
-              ? "led"
-              : beacon.has(key(x, y, z))
-                ? "beacon"
-                : undefined,
+        glow: m === "eye" ? "eye" : m === "led" ? "led" : undefined,
       });
   }
   const [x0, y0] = [Math.min(...xs) - 0.5, Math.min(...ys) - 0.5];
@@ -271,10 +273,10 @@ function buildRover() {
   return { faces, view };
 }
 
-const ROVER = buildRover();
+const REX = buildRex();
 
 function Faces({ part }: { part: Part }) {
-  return ROVER.faces
+  return REX.faces
     .filter((f) => f.part === part)
     .map((f, i) => (
       <path
@@ -282,7 +284,7 @@ function Faces({ part }: { part: Part }) {
         d={f.d}
         fill={f.fill}
         stroke={f.fill}
-        strokeWidth="0.04"
+        strokeWidth="0.1"
         strokeLinejoin="round"
         className={f.glow}
       />
@@ -293,9 +295,9 @@ export function Robot({ className = "" }: { className?: string }) {
   return (
     <svg
       className={`robot ${className}`}
-      viewBox={ROVER.view}
+      viewBox={REX.view}
       role="img"
-      aria-label="Isometric voxel rescue robot on twin tracks, with a camera mast and a gripper"
+      aria-label="Rex, a six-legged robot drawn in isometric voxels: a bone-white helmet with a round face screen and two cyan eyes, on a teal and charcoal body"
     >
       <Faces part="body" />
       <g className="head">
