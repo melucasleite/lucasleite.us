@@ -165,6 +165,17 @@ export const REPOS: Repo[] = [
     tags: ["typescript", "next.js", "playwright", "vitest"],
   },
   {
+    name: "ita",
+    kinds: ["mobile", "game"],
+    title: "Ita",
+    url: GH + "ita",
+    shot: "/shots/ita.jpg",
+    fresh: true,
+    blurb:
+      "A virtual pet for two, fed entirely by housework. One of you sets the chores, the other does them, and a small pixel girl on a farm keeps score.",
+    tags: ["swift", "spritekit", "supabase"],
+  },
+  {
     name: "mark85",
     kinds: ["hardware"],
     title: "MARK 85",
