@@ -1,4 +1,4 @@
-// Everything the page says lives here. No company names, on purpose.
+// Everything the page says lives here. PepsiCo is the only employer named.
 
 const MEDIUM = "https://lucasleite-us.medium.com/";
 const GH = "https://github.com/melucasleite/";
@@ -88,6 +88,24 @@ export const LIVE: Live[] = [
       "A browser factory/farming tycoon: build a chips-and-soda empire from a weedy roadside lot. Deterministic simulation, pixel art, synthesized audio.",
     tags: ["typescript", "next.js", "pixijs", "supabase"],
   },
+  {
+    name: "Rex the spider",
+    kinds: ["hardware", "ai", "maker"],
+    url: "https://rexwalks.vercel.app",
+    shot: "/shots/rex.jpg",
+    blurb:
+      "A six-legged butler you can take apart before he exists. The page draws Rex's CAD model in the browser and builds him in sixteen steps: 26 printed parts, 19 servos, 312 screws. His brain already answers in 1.3 seconds on a Mac. The body hasn't met a printer yet.",
+    tags: ["openscad", "typescript", "python", "on-device ai"],
+  },
+  {
+    name: "Hinata Farm",
+    kinds: ["game", "mobile"],
+    url: "https://hinatafarm.app",
+    shot: "/shots/hinata-farm.jpg",
+    blurb:
+      "A cosy self-care game for dietitians, therapists and professors. They set a few gentle daily habits, and each one a client checks off grows a little pixel farm of their own. No streaks, no leaderboards, built for HIPAA. Coming soon to iPhone and iPad.",
+    tags: ["pixel art", "habit game", "ios", "built for hipaa"],
+  },
 ];
 
 export const CAREER = [
@@ -96,12 +114,12 @@ export const CAREER = [
     role: "Principal Software Engineer",
     where: "global marketing & sales planning",
     story:
-      "At one of America's most iconic brands, I was promoted to principal and handed its global marketing & sales planning platform. I owned the roadmap and the architecture, held 99.99% uptime for 150+ monthly users across global teams, and put agentic AI into production with the Claude Agent SDK and MCP.",
+      "At PepsiCo, I was promoted to principal and handed its global marketing & sales planning platform. I owned the roadmap and the architecture, held 99.99% uptime for 150+ monthly users across global teams, and put agentic AI into production with the Claude Agent SDK and MCP.",
   },
   {
     when: "2020 – 2023",
     role: "Senior Full-stack Engineer",
-    where: "same brand, before the promotion",
+    where: "PepsiCo, before the promotion",
     story:
       "I worked the whole stack: React and Django up top, Kubernetes, AWS and Terraform underneath, and a CI I hardened so bugs got caught before they shipped.",
   },
@@ -145,6 +163,17 @@ export const REPOS: Repo[] = [
     blurb:
       "Desloper scores how generic an AI-written landing page is against eight principles, with deterministic detectors plus a model judge, then hands you a fix prompt built from the findings you keep.",
     tags: ["typescript", "next.js", "playwright", "vitest"],
+  },
+  {
+    name: "ita",
+    kinds: ["mobile", "game"],
+    title: "Ita",
+    url: GH + "ita",
+    shot: "/shots/ita.jpg",
+    fresh: true,
+    blurb:
+      "A virtual pet for two, fed entirely by housework. One of you sets the chores, the other does them, and a small pixel girl on a farm keeps score.",
+    tags: ["swift", "spritekit", "supabase"],
   },
   {
     name: "mark85",
